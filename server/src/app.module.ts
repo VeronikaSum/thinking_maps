@@ -1,10 +1,21 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ThinkingMapModule } from './thinking-map/thinking-map.module';
+import { ImageModule } from './image/image.module';
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 @Module({
-  imports: [],
+  imports: [
+    ThinkingMapModule, ImageModule,
+    TypeOrmModule.forRoot({
+      type: "sqlite",
+      database: "thinkingMapDB.db",
+      entities: [__dirname + "/**/*.entity{.ts,.js}"],
+      synchronize: true
+    })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
