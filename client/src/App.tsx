@@ -1,13 +1,11 @@
 import React from 'react';
-import Table from './Table';
+import Table from './Components/Table';
+import MainPage from './Pages/MainPage';
 import TextInput from './TextInput';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Welcome!</h1>
-      <TextInput />
-    </div>
+    <MainPage />
   );
 }
 

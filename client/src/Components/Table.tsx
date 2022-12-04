@@ -1,13 +1,11 @@
-import { SimilarWord } from "./Types";
+import { SimilarWord } from "../Types";
 
 interface TableProps {
     headers: string[],
     data: SimilarWord[],
-    children?: React.ReactNode
 }
 
 function Table({ headers, data }: TableProps) {
-    console.log(data)
     return (<>
         <div className="overflow-x-auto">
             <table className="table w-full">
@@ -22,7 +20,7 @@ function Table({ headers, data }: TableProps) {
                     {
                         data.map((entry: SimilarWord) => {
                             return (
-                                <tr>
+                                <tr key={entry.word + entry.score}>
                                     <td>{entry.word}</td>
                                     <td>{entry.score}</td>
                                     <td>{entry.frequency}</td>

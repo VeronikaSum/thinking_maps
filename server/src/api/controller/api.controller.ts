@@ -1,4 +1,5 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Query, Req } from '@nestjs/common';
+import { query } from 'express';
 import { ImageRequest, SearchWordRequest } from '../apiTypes';
 import { ApiService } from '../service/api.service';
 
@@ -12,7 +13,7 @@ export class ApiController {
     }
 
     @Get('/words')
-    async GetSimilarWords(@Body() request: SearchWordRequest) {
-        return await this.apiService.getSimilarWords(request)
+    async GetSimilarWords(@Query() query: SearchWordRequest) {
+        return await this.apiService.getSimilarWords(query)
     }
 }
