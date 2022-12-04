@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ThinkingMapModule } from './thinking-map/thinking-map.module';
 import { ImageModule } from './image/image.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { ApiModule } from './api/api.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
       database: "thinkingMapDB.db",
       entities: [__dirname + "/**/*.entity{.ts,.js}"],
       synchronize: true
-    })
+    }),
+    ApiModule
   ],
   controllers: [AppController],
   providers: [AppService],
