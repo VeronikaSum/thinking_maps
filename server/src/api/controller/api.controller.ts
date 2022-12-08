@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Param, Query, Req } from '@nestjs/common';
-import { query } from 'express';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ImageRequest, SearchWordRequest } from '../apiTypes';
 import { ApiService } from '../service/api.service';
 
@@ -8,12 +7,26 @@ export class ApiController {
     constructor(private apiService: ApiService) { }
 
     @Get('/images')
-    async GetImagesByKeywords(@Body() keywords: ImageRequest) {
-        return await this.apiService.getImagesByKeywords(keywords)
+    async GetImagesByKeywords(@Query() request: ImageRequest) {
+        if (request) {
+            return await this.apiService.getImagesByKeywords(request)
+        }
+        return null;
     }
 
     @Get('/words')
-    async GetSimilarWords(@Query() query: SearchWordRequest) {
-        return await this.apiService.getSimilarWords(query)
+    async GetSimilarWords(@Query() request: SearchWordRequest) {
+        if (request) {
+            return await this.apiService.getSimilarWords(request)
+        }
+        return null;
+    }
+
+    @Get('/map')
+    async GetMergedMap(@Query() request: { links: string[] }) {
+        if (request.links.length != 0) {
+            return await this.apiService.mergeMap(request);;
+        }
+        return '';
     }
 }

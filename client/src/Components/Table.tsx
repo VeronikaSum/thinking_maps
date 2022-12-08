@@ -21,7 +21,7 @@ function Table({ headers, data }: TableProps) {
                         data.map((entry: SimilarWord) => {
                             return (
                                 <tr key={entry.word + entry.score}>
-                                    <td>{entry.word}</td>
+                                    <td>{entry.word.toLowerCase()}</td>
                                     <td>{entry.score}</td>
                                     <td>{entry.frequency}</td>
                                 </tr>

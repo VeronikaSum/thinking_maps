@@ -6,6 +6,7 @@ export type SearchWordRequest = {
 }
 
 export type ImageRequest = {
+    mainWord: string,
     keywords: string[],
 }
 
@@ -39,6 +40,7 @@ type Image = {
     height: number,
     width: number,
     byteSize: number,
+    displayLink: string,
     thumbnailLink: string,
     thumbnailHeight: number,
     thumbnailWidth: number,
@@ -48,6 +50,7 @@ export type ImageInformation = {
     searchWord: string,
     title: string,
     thumbnailLink: string,
+    displayLink: string,
     height: number,
     width: number,
 }

@@ -11,6 +11,7 @@ export const imageMapper = (data: ImageItemInformationResponse[], keyword: strin
     searchWord: keyword,
     title: entry.title,
     thumbnailLink: entry.image.thumbnailLink,
+    displayLink: entry.image.displayLink,
     height: entry.image.thumbnailHeight,
     width: entry.image.thumbnailWidth,
 }
