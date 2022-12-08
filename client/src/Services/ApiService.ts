@@ -7,8 +7,7 @@ class ApiService {
         const url = `api/words`
         return http.get(url, {
             params: {
-                searchWord: request.searchWord,
-                searchWordType: request.searchWordType
+                ...request
             }
         }).then((res) => { return res.data })
     }

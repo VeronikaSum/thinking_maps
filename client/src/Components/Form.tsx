@@ -8,18 +8,19 @@ type FormProps = {
 function Form({ onSubmit }: FormProps) {
     const { register, handleSubmit } = useForm();
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <select defaultValue="noun" {...register("searchWordType", {})}>
-                    <option value="noun">Daiktavardis</option>
-                    <option value="adjective">Būdvardis</option>
-                </select>
+        <>
+            <div className="card mb-16 mx-auto w-96 bg-base-100 shadow-xl">
+                <div className="card-body">
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="flex flex-col">
+                            <input placeholder="Žodis" className="input mx-auto input-bordered w-full max-w-xs mb-4" type="text" {...register("searchWord", {})} />
+                            <button className="btn mx-auto  btn-wide" type="submit">Ieškoti</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-            <div>
-                <input type="text" placeholder="Žodis" {...register("searchWord", {})} />
-            </div>
-            <input type="submit" />
-        </form>
+        </>
     )
 }
 

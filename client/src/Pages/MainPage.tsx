@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Form from "../Components/Form";
 import Table from "../Components/Table";
 import ImagesGrid from "../ImagesGrid";
-import { ImageInformation, ImageRequest, SearchWordRequest, SimilarWord } from "../Types";
+import { ImageInformation, ImageRequest, SearchWordRequest, Similar, similar, SimilarWord } from "../Types";
 import ApiService from "../Services/ApiService";
 import Navbar from "../Components/Navbar";
 
@@ -14,11 +14,23 @@ function MainPage() {
     const [b64, setb64] = useState(null);
 
     const onSubmit = async (data: SearchWordRequest) => {
-        await ApiService.getSimilarWords(data)
-            .then(res => {
-                setSimilarWords(res);
-                setMainWord(data.searchWord)
-            });
+
+        const map = (data: Similar[]) => data.map((itemSimilarWord, index) => ({
+            id: index,
+            ...itemSimilarWord,
+            checked: false,
+        }));
+
+        setSimilarWords(map(similar.data));
+        setMainWord(data.searchWord)
+
+        // console.log(similarWords)
+
+        // await ApiService.getSimilarWords(data)
+        //     .then(res => {
+        //         setSimilarWords(res);
+        //         setMainWord(data.searchWord)
+        //     });
     }
 
     useEffect(() => {
@@ -43,16 +55,12 @@ function MainPage() {
     }, [images])
 
     return (
-        <div className="bg-slate-600">
+        <div className='bg-gradient-to-r from-purple-200 min-h-screen pb-16'>
             <Navbar />
-
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
             <Form onSubmit={onSubmit} />
             {
                 similarWords.length !== 0 && (
-                    <Table headers={['Žodis', 'Įvertis', 'Dažnumas']} data={similarWords} />
+                    <Table data={similarWords} />
                 )
             }
 

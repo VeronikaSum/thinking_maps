@@ -1,7 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from 'rxjs';
-import { SearchWordType } from 'src/Types';
 import { ImageInformation, ImageRequest, SearchWordRequest, SimilarWord } from '../apiTypes';
 import { imageMapper, similarWordsMapper } from '../mapper';
 import mergeImages = require('merge-images');
@@ -106,39 +105,24 @@ export class ApiService {
 
     async getSimilarWords(request: SearchWordRequest) {
         var mainWord: string = await this.translateToEnText(request.searchWord);
-        switch (request.searchWordType) {
-            case SearchWordType.NOUN:
-                {
-                    const req = this.http.get(`https://api.datamuse.com/words?rel_jjb=${mainWord}&max=200&md=f`);
+        const req = this.http.get(`https://api.datamuse.com/words?rel_jjb=${mainWord}&max=200&md=f`);
 
-                    const res = await firstValueFrom(req);
+        const res = await firstValueFrom(req);
 
-                    const similarWords: SimilarWord[] = similarWordsMapper(res.data);
-                    similarWords.sort((a, b) => +b.frequency - +a.frequency);
+        const similarWords: SimilarWord[] = similarWordsMapper(res.data);
+        similarWords.sort((a, b) => +b.frequency - +a.frequency);
 
-                    const wordsToTranslate: string[] = [];
+        const wordsToTranslate: string[] = [];
 
-                    similarWords.forEach(word => wordsToTranslate.push(word.word))
+        similarWords.forEach(word => wordsToTranslate.push(word.word))
 
-                    const translatedWords = await this.translateToLtText(wordsToTranslate);
-                    for (var i = 0; i < translatedWords.length; i++) {
-                        similarWords[i].word = translatedWords[i];
-                    }
-
-                    return similarWords;
-                };
-            case SearchWordType.ADJECTIVE:
-                {
-                    // return this.http.get(`https://api.datamuse.com/words?rel_jja=${request.searchWord}&max=200&md=f`).pipe(
-                    //     map(results => results.data),
-                    //     map(data => similarWordsMapper(data)),
-                    //     // map(words => words.sort(function (a, b) { return +b.frequency - +a.frequency })),
-                    //     map(results => results.slice(0, 24))
-                    // );
-                }
-            default:
-                throw new BadRequestException(`${request.searchWordType} this word type is not implemented!`)
+        const translatedWords = await this.translateToLtText(wordsToTranslate);
+        for (var i = 0; i < translatedWords.length; i++) {
+            similarWords[i].word = translatedWords[i];
         }
+
+        return similarWords;
+
     }
 
     async getImagesByKeywords(imageRequest: ImageRequest) {

@@ -1,8 +1,5 @@
-import { SearchWordType } from "src/Types"
-
 export type SearchWordRequest = {
     searchWord: string,
-    searchWordType: SearchWordType
 }
 
 export type ImageRequest = {
