@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { ImageEntity } from 'src/image/image.entity';
+import { ImageService } from 'src/image/service/image/image.service';
 import { ThinkingMapService } from 'src/thinking-map/service/thinking-map/thinking-map.service';
 import { ThinkingMapEntity } from 'src/thinking-map/thinking-map.entity';
-import { ImageEntity } from './image.entity';
-import { ImageService } from './service/image/image.service';
-import { TypeOrmModule } from '@nestjs/typeorm'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ThinkingMapEntity, ImageEntity])],
-  providers: [ThinkingMapService, ImageService]
+    imports: [TypeOrmModule.forFeature([ThinkingMapEntity, ImageEntity])],
+    providers: [ThinkingMapService, ImageService]
 })
 export class ImageModule { }

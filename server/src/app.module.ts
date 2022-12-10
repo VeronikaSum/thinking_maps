@@ -13,9 +13,9 @@ import { ApiModule } from './api/api.module';
       type: "sqlite",
       database: "thinkingMapDB.db",
       entities: [__dirname + "/**/*.entity{.ts,.js}"],
-      synchronize: true
+      synchronize: true,
     }),
-    ApiModule
+    ApiModule,
   ],
   controllers: [AppController],
   providers: [AppService],

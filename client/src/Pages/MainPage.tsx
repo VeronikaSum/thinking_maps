@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import Form from "../Components/Form";
 import Table from "../Components/Table";
 import ImagesGrid from "../ImagesGrid";
 import { ImageInformation, ImageRequest, SearchWordRequest, Similar, similar, SimilarWord } from "../Types";
 import ApiService from "../Services/ApiService";
 import Navbar from "../Components/Navbar";
+import { v4 as uuid } from 'uuid';
 
 function MainPage() {
 
@@ -14,9 +15,8 @@ function MainPage() {
     const [b64, setb64] = useState(null);
 
     const onSubmit = async (data: SearchWordRequest) => {
-
-        const map = (data: Similar[]) => data.map((itemSimilarWord, index) => ({
-            id: index,
+        const map = (data: Similar[]) => data.map((itemSimilarWord) => ({
+            id: uuid(),
             ...itemSimilarWord,
             checked: false,
         }));
@@ -36,7 +36,6 @@ function MainPage() {
     useEffect(() => {
         if (similarWords.length !== 0) {
             const keywords: string[] = [];
-            console.log(similarWords)
             similarWords.slice(0, 6).forEach(word => keywords.push(word.word));
             const imageRequest: ImageRequest = {
                 mainWord: mainWord,
@@ -60,7 +59,7 @@ function MainPage() {
             <Form onSubmit={onSubmit} />
             {
                 similarWords.length !== 0 && (
-                    <Table data={similarWords} />
+                    <Table data={similarWords} word={mainWord} />
                 )
             }
 

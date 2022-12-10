@@ -3,9 +3,6 @@ import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from 'rxjs';
 import { ImageInformation, ImageRequest, SearchWordRequest, SimilarWord } from '../apiTypes';
 import { imageMapper, similarWordsMapper } from '../mapper';
-import mergeImages = require('merge-images');
-import { Canvas, Image } from 'canvas';
-import * as fs from 'fs';
 
 @Injectable()
 export class ApiService {
@@ -16,50 +13,6 @@ export class ApiService {
 
     private key = "1b28f9e8f42a4f77aaa43ed461a6d2c4";
     private location = "westeurope";
-
-
-    async mergeMap(request: { links: string[] }): Promise<string> {
-        const imageLinks = request.links;
-        for (var i = 0; i < imageLinks.length; i++) {
-            const imagePath = `./resources/images/image${i}.png`
-            const writer = fs.createWriteStream(imagePath);
-            const response = this.http.get(imageLinks[i], {
-                responseType: 'stream',
-            });
-            const result = await firstValueFrom(response);
-            result.data.pipe(writer);
-        }
-
-        const b64: string = await mergeImages([
-            { src: './resources/bubble-map.png', x: 0, y: 0 },
-            { src: './resources/images/image0.png', x: 500, y: 500 },
-            { src: './resources/images/image1.png', x: 490, y: 145 },
-            { src: './resources/images/image2.png', x: 150, y: 284 },
-            { src: './resources/images/image3.png', x: 165, y: 650 },
-        ], {
-            Image: Image,
-            Canvas: Canvas,
-        }).then(res => res);
-
-        var base64Data = b64.replace(/^data:image\/png;base64,/, "");
-
-        await new Promise(function (resolve, reject) {
-            fs.writeFile('./resources/images/temp.png', base64Data, 'base64', function (err) {
-                if (err) reject(err);
-                else resolve(base64Data);
-            });
-        });
-
-        return await mergeImages([
-            { src: './resources/images/temp.png', x: 0, y: 0 },
-            { src: './resources/images/image4.png', x: 830, y: 650 },
-            { src: './resources/images/image5.png', x: 820, y: 262 },
-            { src: './resources/images/image6.png', x: 500, y: 850 },
-        ], {
-            Image: Image,
-            Canvas: Canvas,
-        })
-    }
 
     async translateToEnText(input: string) {
         try {

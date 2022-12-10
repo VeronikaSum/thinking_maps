@@ -1,5 +1,5 @@
 import { ThinkingMapEntity } from 'src/thinking-map/thinking-map.entity'
-import { Entity, OneToOne, JoinColumn, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'
+import { Entity, JoinColumn, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'
 
 @Entity()
 export class ImageEntity {
@@ -10,19 +10,13 @@ export class ImageEntity {
     title: string
 
     @Column()
-    link: string
-
-    @Column()
-    height: number
-
-    @Column()
-    width: number
+    content: string
 
     @Column()
     searchWord: string
 
-    @ManyToOne(() => ThinkingMapEntity, (map) => map.mapImages)
-    @JoinColumn()
-    map: ThinkingMapEntity
+    // @ManyToOne(() => ThinkingMapEntity, (map) => map.mapImages)
+    // @JoinColumn()
+    // map: ThinkingMapEntity
 }
 

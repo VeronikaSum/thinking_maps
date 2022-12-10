@@ -22,11 +22,11 @@ export class ApiController {
         return null;
     }
 
-    @Get('/map')
-    async GetMergedMap(@Query() request: { links: string[] }) {
-        if (request.links.length != 0) {
-            return await this.apiService.mergeMap(request);;
-        }
-        return '';
-    }
+    // @Get('/map')
+    // async GetMergedMap(@Query() request: { links: string[] }) {
+    //     if (request.links.length != 0) {
+    //         return await this.apiService.mergeMap(request);;
+    //     }
+    //     return '';
+    // }
 }

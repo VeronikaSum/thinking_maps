@@ -2,6 +2,12 @@ export type SearchWordRequest = {
     searchWord: string,
 }
 
+export type GenerateMapRequest = {
+    mapTitle: string,
+    mainWord: string,
+}
+
+
 export type ImageRequest = {
     mainWord: string,
     keywords: string[],
@@ -20,7 +26,7 @@ export type Similar = {
 }
 
 export type SimilarWord = {
-    id: number,
+    id: string,
     word: string,
     frequency: string,
     score: number,
@@ -28,10 +34,10 @@ export type SimilarWord = {
 }
 
 export type CheckedItem = {
-    id: number,
+    id: string,
+    canBeDeleted: boolean,
     word: string,
-    checked: boolean,
-    image: string | null,
+    image: File | null,
 }
 
 export type ImageItemInformationResponse = {
@@ -66,9 +72,12 @@ export type ImageInformation = {
     width: number,
 }
 
-export enum SearchWordType {
-    ADJECTIVE = 'adjective',
-    NOUN = 'noun'
+export type ThinkingMapEntity = {
+    id: number,
+    title: string,
+    mainWord: string,
+    createdAt: string,
+    content: string,
 }
 
 export const similar = {
