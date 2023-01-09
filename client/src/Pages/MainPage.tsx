@@ -56,6 +56,7 @@ function MainPage() {
     return (
         <div className='bg-gradient-to-r from-purple-200 min-h-screen pb-16'>
             <Navbar />
+            <h1 className="text-center text-3xl font-bold mt-0 mb-6">Apibūdinimas – burbulo žemėlapis</h1>
             <Form onSubmit={onSubmit} />
             {
                 similarWords.length !== 0 && (
@@ -73,6 +74,7 @@ function MainPage() {
                 (< img src={b64} />)
             }
         </div>
+
     )
 
 }

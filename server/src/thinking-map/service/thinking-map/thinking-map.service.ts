@@ -19,39 +19,27 @@ export class ThinkingMapService {
     }
 
     async create(images: Express.Multer.File[], request: GenerateMapRequest) {
+        console.log(request)
         const entity = new ThinkingMapEntity();
 
-        entity.mainWord = request.mainWord;
-        entity.title = request.mapTitle;
+        entity.mainWord = images[0].originalname;
+        entity.title = request.mapTitle || Date.now() + "_map";
 
         const content = await this.mergeMap(images).then(res => { return res })
 
         entity.content = content;
 
-        const createdEntity = this.thinkingMapRepository.create(entity);
-        console.log(createdEntity)
+        var savedImages: ImageEntity[] = [];
+        for (var i = 0; i < images.length; i++) {
+            const imageEntity = new ImageEntity();
+            imageEntity.title = images[i].originalname;
+            console.log(images[i])
+            imageEntity.content = images[i].buffer.toString('base64')
+            savedImages.push(await this.imageRepository.save(imageEntity))
+        }
 
-        return createdEntity;
-
-
-        // request.mapElements.forEach(element => {
-        //     const image = new ImageEntity();
-        //     image.searchWord = element.word;
-        //     console.log(element.image)
-        //     imageEntities.push(image);
-        // });
-
-
-
-
-
-
-
-        // map.mainImage = await this.imageRepository.save(map.mainImage);
-        // map.mapImages = await this.imageRepository.save(map.mapImages);
-
-        // const result = await this.thinkingMapRepository.save(map)
-        // return result;
+        entity.images = savedImages;
+        return await this.thinkingMapRepository.save(entity);
     }
 
     async resizeImage(image: Express.Multer.File, path: string) {
@@ -59,7 +47,6 @@ export class ThinkingMapService {
         readImage.resize(100, 100);
 
         await readImage.writeAsync(path);
-        console.log('aaaaaaaaaa')
     };
 
     async resizeImages(images: Express.Multer.File[], path: string) {
@@ -115,7 +102,7 @@ export class ThinkingMapService {
             { src: './resources/images/temp.png', x: 0, y: 0 },
             { src: paths[4], x: 830, y: 650 },
             { src: paths[5], x: 820, y: 262 },
-            { src: paths[6], x: 500, y: 850 },
+            // { src: paths[6], x: 500, y: 850 },
         ], {
             Image: Image,
             Canvas: Canvas,

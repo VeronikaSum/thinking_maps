@@ -6,7 +6,6 @@ export type MapElement = {
 export type GenerateMapRequest = {
     mapTitle: string,
     mainWord: string,
-    selectedWords: string[]
 }
 
 export type ImageType = {

@@ -22,7 +22,6 @@ function Table({ data, word }: TableProps) {
     const [inputValue, setInputValue] = useState('');
     const [file, setFile] = useState<File>()
     const [thinkingMap, setThinkingMap] = useState<ThinkingMapEntity | null>(null)
-    const [open, setOpen] = useState(false)
 
     async function handleChange(event: React.ChangeEvent<HTMLInputElement>, checkedItem: CheckedItem) {
         if (event.target.files !== null && event.target.files[0] !== null) {
@@ -92,11 +91,11 @@ function Table({ data, word }: TableProps) {
     }
 
     return (
-        <div className="grid grid-cols-2 gap-2">
+        <><div className="grid grid-cols-2 gap-2">
             <div className="mx-auto">
                 <input value={inputValue} onInput={e => setInputValue(e.currentTarget.value)} type="text" placeholder="Įveskite savo žodį" className="input input-bordered w-full max-w-xs mb-2" />
                 <button onClick={() => {
-                    addNewItem(inputValue)
+                    addNewItem(inputValue);
                 }} className="btn w-full mb-4">Įvesti</button>
                 <div className="h-80 overflow-y-auto">
                     <table className="table w-full">
@@ -106,17 +105,15 @@ function Table({ data, word }: TableProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {
-                                data.map((entry: SimilarWord) => {
-                                    return (
-                                        <tr key={entry.id} onClick={() => {
-                                            selectItem(entry)
-                                        }}>
-                                            <td>{entry.word.toLowerCase()}</td>
-                                        </tr>
-                                    )
-                                })
-                            }
+                            {data.map((entry: SimilarWord) => {
+                                return (
+                                    <tr key={entry.id} onClick={() => {
+                                        selectItem(entry);
+                                    }}>
+                                        <td>{entry.word.toLowerCase()}</td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
@@ -127,24 +124,26 @@ function Table({ data, word }: TableProps) {
                         <>
                             <div className="ml-8 form-control w-full">
                                 <label className="label">
-                                    <span className="label-text text-lg	">Pridėkite paveiksliuką žodžiui <span className="font-bold">{item.word.toUpperCase()}</span></span>
+                                    <span className="label-text .justify-start text-lg	">Pridėkite paveiksliuką žodžiui <span className="font-bold">{item.word.toUpperCase()}</span></span>
                                     {item.canBeDeleted &&
                                         (<svg onClick={() => removeItem(item.id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                                         </svg>
                                         )}
                                 </label>
-                                <input onChange={(e) => { handleChange(e, item) }} type="file" accept="image/*" className="file-input file-input-sm file-input-bordered w-full max-w-xs" />
+                                <input onChange={(e) => { handleChange(e, item); }} type="file" accept="image/*" className="file-input file-input-sm file-input-bordered w-full max-w-xs" />
                             </div>
                         </>
-                    )
+                    );
                 })}
-                <button onClick={() => { generateMap() }}>Generuoti žemėlapį</button>
             </div>
-            {thinkingMap !== null && (
-                <img src={thinkingMap.content} />
-            )}
         </div>
+            <div className="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
+                <button disabled={checkedItems.length != 7} className="btn" onClick={() => { generateMap(); }}>Generuoti žemėlapį</button>
+                {thinkingMap !== null && (
+                    <img src={thinkingMap.content} />
+                )}
+            </div></>
     )
 }
 

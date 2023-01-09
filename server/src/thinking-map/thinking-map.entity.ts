@@ -1,4 +1,5 @@
-import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { ImageEntity } from 'src/image/image.entity'
+import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm'
 
 @Entity()
 export class ThinkingMapEntity {
@@ -16,6 +17,10 @@ export class ThinkingMapEntity {
 
     @Column()
     content: string
+
+    @OneToMany(type => ImageEntity, image => image.id)
+    @JoinColumn()
+    images: ImageEntity[]
 }
 
 
