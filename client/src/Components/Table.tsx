@@ -78,9 +78,8 @@ function Table({ data, word }: TableProps) {
         var formData = new FormData();
         formData.append('request', JSON.stringify(request));
 
-        checkedItems.forEach((item: CheckedItem) => {
+        checkedItems.forEach(async (item: CheckedItem) => {
             if (item.image !== null) {
-                console.log(item.image)
                 formData.append(`images`, item.image, item.word)
             }
             return formData;

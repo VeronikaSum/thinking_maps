@@ -15,8 +15,7 @@ export class ThinkingMapController {
 
     @Post()
     @UseInterceptors(FilesInterceptor('images', 7, { dest: './resources/images' }))
-    async createThinkingMap(@UploadedFiles() images: ImageType[], @Body() request: GenerateMapRequest) {
-        // console.log(images)
+    async createThinkingMap(@UploadedFiles() images: Express.Multer.File[], @Body() request: GenerateMapRequest) {
         return await this.thinkingMapService.create(images, request);
     }
 }

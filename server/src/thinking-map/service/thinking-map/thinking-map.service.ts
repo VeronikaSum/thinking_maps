@@ -7,6 +7,8 @@ import { GenerateMapRequest, ImageType } from 'src/types';
 import mergeImages = require('merge-images');
 import { Canvas, Image } from 'canvas';
 import * as fs from 'fs';
+import sharp = require('sharp');
+import Jimp = require('jimp');
 
 @Injectable()
 export class ThinkingMapService {
@@ -16,8 +18,7 @@ export class ThinkingMapService {
         return await this.thinkingMapRepository.find()
     }
 
-    async create(images: ImageType[], request: GenerateMapRequest) {
-        // console.log(images);
+    async create(images: Express.Multer.File[], request: GenerateMapRequest) {
         const entity = new ThinkingMapEntity();
 
         entity.mainWord = request.mainWord;
@@ -28,7 +29,7 @@ export class ThinkingMapService {
         entity.content = content;
 
         const createdEntity = this.thinkingMapRepository.create(entity);
-        // console.log(createdEntity)
+        console.log(createdEntity)
 
         return createdEntity;
 
@@ -53,53 +54,71 @@ export class ThinkingMapService {
         // return result;
     }
 
-    async mergeMap(images: ImageType[]): Promise<string> {
-        // const imageLinks = request.links;
-        // for (var i = 0; i < imageLinks.length; i++) {
-        //     const imagePath = `./resources/images/image${i}.png`
-        //     const writer = fs.createWriteStream(imagePath);
-        //     const response = this.http.get(imageLinks[i], {
-        //         responseType: 'stream',
-        //     });
-        //     const result = await firstValueFrom(response);
-        //     result.data.pipe(writer);
-        // }
+    async resizeImage(image: Express.Multer.File, path: string) {
+        const readImage = await Jimp.read(image.path);
+        readImage.resize(100, 100);
 
-        // console.log(images)
-        console.log(images[0])
-        console.log(images[0].path)
+        await readImage.writeAsync(path);
+        console.log('aaaaaaaaaa')
+    };
+
+    async resizeImages(images: Express.Multer.File[], path: string) {
+        const promises = images.map((image) => {
+            return Jimp.read(image.path)
+                .then(res => {
+                    return res
+                        .resize(150, 150)
+                        .writeAsync(path + image.filename);
+                })
+                .catch(console.error);
+        });
+
+        await Promise.all(promises);
+    }
+
+    async mergeMap(images: Express.Multer.File[]): Promise<string> {
+        console.log(images)
+        const paths: string[] = [];
+        const resizedImagePath = './resources/images/resized/';
+
+        for (var i = 0; i < images.length; i++) {
+            const resizedImagePath = './resources/images/resized/' + images[i].filename;
+            const extention = images[i].mimetype === 'image/jpeg' ? '.jpeg' : '.png'
+
+            console.log('images[i]', images[i].filename)
+            await this.resizeImage(images[i], resizedImagePath);
+            console.log('images[i]', images[i].filename)
+            paths.push(resizedImagePath);
+        }
 
         const b64: string = await mergeImages([
             { src: './resources/bubble-map.png', x: 0, y: 0 },
-            { src: images[0].path, x: 500, y: 500 },
-            // { src: images[1].path, x: 490, y: 145 },
-            // { src: images[2].path, x: 150, y: 284 },
-            // { src: images[3].path, x: 165, y: 650 },
+            { src: paths[0], x: 500, y: 500 },
+            { src: paths[1], x: 490, y: 145 },
+            { src: paths[2], x: 150, y: 284 },
+            { src: paths[3], x: 165, y: 650 },
         ], {
             Image: Image,
             Canvas: Canvas,
         }).then(res => res);
 
-        return b64;
-        return '';
+        var base64Data = b64.replace(/^data:image\/png;base64,/, "");
 
-        // var base64Data = b64.replace(/^data:image\/png;base64,/, "");
+        await new Promise(function (resolve, reject) {
+            fs.writeFile('./resources/images/temp.png', base64Data, 'base64', function (err) {
+                if (err) reject(err);
+                else resolve(base64Data);
+            });
+        });
 
-        // await new Promise(function (resolve, reject) {
-        //     fs.writeFile('./resources/images/temp.png', base64Data, 'base64', function (err) {
-        //         if (err) reject(err);
-        //         else resolve(base64Data);
-        //     });
-        // });
-
-        // return await mergeImages([
-        //     { src: './resources/images/temp.png', x: 0, y: 0 },
-        //     { src: './resources/images/image4.png', x: 830, y: 650 },
-        //     { src: './resources/images/image5.png', x: 820, y: 262 },
-        //     { src: './resources/images/image6.png', x: 500, y: 850 },
-        // ], {
-        //     Image: Image,
-        //     Canvas: Canvas,
-        // })
+        return await mergeImages([
+            { src: './resources/images/temp.png', x: 0, y: 0 },
+            { src: paths[4], x: 830, y: 650 },
+            { src: paths[5], x: 820, y: 262 },
+            { src: paths[6], x: 500, y: 850 },
+        ], {
+            Image: Image,
+            Canvas: Canvas,
+        })
     }
 }
