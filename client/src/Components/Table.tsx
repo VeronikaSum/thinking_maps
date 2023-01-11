@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckedItem, GenerateMapRequest, SimilarWord, ThinkingMapEntity } from "../Types";
 import { v4 as uuid } from 'uuid';
 import ThinkingMapService from "../Services/ThinkingMapService";
-import Resizer from "react-image-file-resizer";
 
 interface TableProps {
     data: SimilarWord[],
@@ -15,35 +14,36 @@ function Table({ data, word }: TableProps) {
         id: uuid(),
         word: word,
         canBeDeleted: false,
-        image: null,
     }
 
     const [checkedItems, setCheckedItems] = useState<CheckedItem[]>([mainWord]);
     const [inputValue, setInputValue] = useState('');
-    const [file, setFile] = useState<File>()
     const [thinkingMap, setThinkingMap] = useState<ThinkingMapEntity | null>(null)
+    const [isFilesUploading, setIsFilesUploading] = useState<boolean>(false);
 
     async function handleChange(event: React.ChangeEvent<HTMLInputElement>, checkedItem: CheckedItem) {
         if (event.target.files !== null && event.target.files[0] !== null) {
-            setFile(event.target.files[0])
-            if (file) {
-                setCheckedItems(checkedItems.map(item => {
-                    if (item.id === checkedItem.id) {
-                        return { ...item, image: file };
-                    }
+            setCheckedItems(checkedItems.map(item => {
+                if (event.target.files != null && item.id === checkedItem.id) {
+                    setIsFilesUploading(true)
+                    return { ...item, image: event.target.files[0] };
+                }
+                return item;
+            }));
 
-                    return item;
-                }));
-            }
+            console.log(checkedItems)
         }
     }
+
+    useEffect(() => {
+        setIsFilesUploading(false)
+    }, [checkedItems])
 
     const selectItem = (entry: SimilarWord) => {
         setCheckedItems([...checkedItems, {
             id: entry.id,
             word: entry.word,
             canBeDeleted: true,
-            image: null,
         }])
 
     }
@@ -55,7 +55,6 @@ function Table({ data, word }: TableProps) {
                 id: uuid(),
                 word: value,
                 canBeDeleted: true,
-                image: null,
             }])
             setInputValue('')
         }
@@ -78,17 +77,17 @@ function Table({ data, word }: TableProps) {
         formData.append('request', JSON.stringify(request));
 
         checkedItems.forEach(async (item: CheckedItem) => {
-            if (item.image !== null) {
+            if (item.image && item.image !== null) {
                 formData.append(`images`, item.image, item.word)
             }
             return formData;
         })
         ThinkingMapService.postThinkingMap(formData).then(data => {
-            console.log(data)
             setThinkingMap(data)
         });
-        console.log(thinkingMap)
+        
     }
+    console.log(checkedItems.length > 7)
 
     return (
         <><div className="grid grid-cols-2 gap-2">
@@ -122,7 +121,7 @@ function Table({ data, word }: TableProps) {
                 {checkedItems.map((item: CheckedItem) => {
                     return (
                         <>
-                            <div className="ml-8 form-control w-full">
+                            <div className="ml-8 form-control">
                                 <label className="label">
                                     <span className="label-text .justify-start text-lg	">Pridėkite paveiksliuką žodžiui <span className="font-bold">{item.word.toUpperCase()}</span></span>
                                     {item.canBeDeleted &&
@@ -139,7 +138,7 @@ function Table({ data, word }: TableProps) {
             </div>
         </div>
             <div className="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
-                <button disabled={checkedItems.length != 7} className="btn" onClick={() => { generateMap(); }}>Generuoti žemėlapį</button>
+                <button disabled={checkedItems.length < 7 && !isFilesUploading} className="btn" onClick={() => { generateMap(); }}>Generuoti žemėlapį</button>
                 {thinkingMap !== null && (
                     <img src={thinkingMap.content} />
                 )}

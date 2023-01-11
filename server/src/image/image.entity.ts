@@ -10,13 +10,12 @@ export class ImageEntity {
     title: string
 
     @Column()
-    content: string
+    contentFull: string
 
     @Column()
-    searchWord: string
+    contentType: string
 
-    // @ManyToOne(() => ThinkingMapEntity, (map) => map.mapImages)
-    // @JoinColumn()
-    // map: ThinkingMapEntity
+    @Column()
+    mimeType: string
 }
 

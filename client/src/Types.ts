@@ -37,7 +37,7 @@ export type CheckedItem = {
     id: string,
     canBeDeleted: boolean,
     word: string,
-    image: File | null,
+    image?: File,
 }
 
 export type ImageItemInformationResponse = {

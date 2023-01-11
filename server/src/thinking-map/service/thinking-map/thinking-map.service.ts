@@ -29,39 +29,39 @@ export class ThinkingMapService {
 
         entity.content = content;
 
-        var savedImages: ImageEntity[] = [];
-        for (var i = 0; i < images.length; i++) {
-            const imageEntity = new ImageEntity();
-            imageEntity.title = images[i].originalname;
-            console.log(images[i])
-            imageEntity.content = images[i].buffer.toString('base64')
-            savedImages.push(await this.imageRepository.save(imageEntity))
-        }
+        // var savedImages: ImageEntity[] = [];
+        // for (var i = 0; i < images.length; i++) {
+        //     const imageEntity = new ImageEntity();
+        //     imageEntity.title = images[i].originalname;
+        //     console.log(images[i])
+        //     imageEntity.content = images[i].buffer.toString('base64')
+        //     savedImages.push(await this.imageRepository.save(imageEntity))
+        // }
 
-        entity.images = savedImages;
+        // entity.images = savedImages;
         return await this.thinkingMapRepository.save(entity);
     }
 
     async resizeImage(image: Express.Multer.File, path: string) {
         const readImage = await Jimp.read(image.path);
-        readImage.resize(100, 100);
+        readImage.resize(150, 150);
 
         await readImage.writeAsync(path);
     };
 
-    async resizeImages(images: Express.Multer.File[], path: string) {
-        const promises = images.map((image) => {
-            return Jimp.read(image.path)
-                .then(res => {
-                    return res
-                        .resize(150, 150)
-                        .writeAsync(path + image.filename);
-                })
-                .catch(console.error);
-        });
+    // async resizeImages(images: Express.Multer.File[], path: string) {
+    //     const promises = images.map((image) => {
+    //         return Jimp.read(image.path)
+    //             .then(res => {
+    //                 return res
+    //                     .resize(150, 150)
+    //                     .writeAsync(path + image.filename);
+    //             })
+    //             .catch(console.error);
+    //     });
 
-        await Promise.all(promises);
-    }
+    //     await Promise.all(promises);
+    // }
 
     async mergeMap(images: Express.Multer.File[]): Promise<string> {
         console.log(images)
@@ -80,10 +80,10 @@ export class ThinkingMapService {
 
         const b64: string = await mergeImages([
             { src: './resources/bubble-map.png', x: 0, y: 0 },
-            { src: paths[0], x: 500, y: 500 },
-            { src: paths[1], x: 490, y: 145 },
-            { src: paths[2], x: 150, y: 284 },
-            { src: paths[3], x: 165, y: 650 },
+            { src: paths[0], x: 425, y: 425 },
+            { src: paths[1], x: 425, y: 75 },
+            { src: paths[2], x: 100, y: 185 },
+            { src: paths[3], x: 100, y: 575 },
         ], {
             Image: Image,
             Canvas: Canvas,
@@ -100,9 +100,9 @@ export class ThinkingMapService {
 
         return await mergeImages([
             { src: './resources/images/temp.png', x: 0, y: 0 },
-            { src: paths[4], x: 830, y: 650 },
-            { src: paths[5], x: 820, y: 262 },
-            // { src: paths[6], x: 500, y: 850 },
+            { src: paths[4], x: 755, y: 575 },
+            { src: paths[5], x: 755, y: 200 },
+            { src: paths[6], x: 425, y: 775 },
         ], {
             Image: Image,
             Canvas: Canvas,
