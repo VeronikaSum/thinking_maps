@@ -6,14 +6,6 @@ import { ApiService } from '../service/api.service';
 export class ApiController {
     constructor(private apiService: ApiService) { }
 
-    @Get('/images')
-    async GetImagesByKeywords(@Query() request: ImageRequest) {
-        if (request) {
-            return await this.apiService.getImagesByKeywords(request)
-        }
-        return null;
-    }
-
     @Get('/words')
     async GetSimilarWords(@Query() request: SearchWordRequest) {
         if (request) {
@@ -21,12 +13,4 @@ export class ApiController {
         }
         return null;
     }
-
-    // @Get('/map')
-    // async GetMergedMap(@Query() request: { links: string[] }) {
-    //     if (request.links.length != 0) {
-    //         return await this.apiService.mergeMap(request);;
-    //     }
-    //     return '';
-    // }
 }

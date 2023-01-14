@@ -7,7 +7,6 @@ import { GenerateMapRequest, ImageType } from 'src/types';
 import mergeImages = require('merge-images');
 import { Canvas, Image } from 'canvas';
 import * as fs from 'fs';
-import sharp = require('sharp');
 import Jimp = require('jimp');
 
 @Injectable()
@@ -48,20 +47,6 @@ export class ThinkingMapService {
 
         await readImage.writeAsync(path);
     };
-
-    // async resizeImages(images: Express.Multer.File[], path: string) {
-    //     const promises = images.map((image) => {
-    //         return Jimp.read(image.path)
-    //             .then(res => {
-    //                 return res
-    //                     .resize(150, 150)
-    //                     .writeAsync(path + image.filename);
-    //             })
-    //             .catch(console.error);
-    //     });
-
-    //     await Promise.all(promises);
-    // }
 
     async mergeMap(images: Express.Multer.File[]): Promise<string> {
         console.log(images)

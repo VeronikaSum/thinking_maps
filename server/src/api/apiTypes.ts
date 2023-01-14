@@ -42,12 +42,3 @@ type Image = {
     thumbnailHeight: number,
     thumbnailWidth: number,
 }
-
-export type ImageInformation = {
-    searchWord: string,
-    title: string,
-    thumbnailLink: string,
-    displayLink: string,
-    height: number,
-    width: number,
-}

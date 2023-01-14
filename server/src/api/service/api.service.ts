@@ -1,18 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from 'rxjs';
-import { ImageInformation, ImageRequest, SearchWordRequest, SimilarWord } from '../apiTypes';
-import { imageMapper, similarWordsMapper } from '../mapper';
+import { SearchWordRequest, SimilarWord } from '../apiTypes';
+import { similarWordsMapper } from '../mapper';
 
 @Injectable()
 export class ApiService {
     constructor(private http: HttpService) { }
-
-    private apiKey = 'AIzaSyD2sAmVstEK0SyHQOEqLPYnkKdvq4BvBkc'
-    private cx = 'd5088021f995c413e'
-
-    private key = "1b28f9e8f42a4f77aaa43ed461a6d2c4";
-    private location = "westeurope";
 
     async translateToEnText(input: string) {
         try {
@@ -24,8 +18,8 @@ export class ApiService {
                 ],
                 {
                     headers: {
-                        'Ocp-Apim-Subscription-Key': this.key,
-                        'Ocp-Apim-Subscription-Region': this.location,
+                        'Ocp-Apim-Subscription-Key': process.env.TRANSLATOR_API_KEY,
+                        'Ocp-Apim-Subscription-Region': process.env.TRANSLATOR_REGION,
                         'Content-type': 'application/json',
                     },
                 }
@@ -39,14 +33,15 @@ export class ApiService {
     };
 
     async translateToLtText(inputs: string[]) {
+        console.log(inputs)
         const req = this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=lt',
             inputs.map(input => ({
                 text: input
             }))
             , {
                 headers: {
-                    'Ocp-Apim-Subscription-Key': this.key,
-                    'Ocp-Apim-Subscription-Region': this.location,
+                    'Ocp-Apim-Subscription-Key': process.env.TRANSLATOR_API_KEY,
+                    'Ocp-Apim-Subscription-Region': process.env.TRANSLATOR_REGION,
                     'Content-type': 'application/json',
                 },
             }
@@ -74,39 +69,11 @@ export class ApiService {
             similarWords[i].word = translatedWords[i];
         }
 
+        console.log(request)
+        console.log(similarWords)
+
         return similarWords;
 
     }
-
-    async getImagesByKeywords(imageRequest: ImageRequest) {
-        console.log(imageRequest)
-        var links: string[] = [];
-        const translatedMainWord: string = await this.translateToEnText(imageRequest.mainWord).then(res => res)
-        links.push(`https://www.googleapis.com/customsearch/v1?key=${this.apiKey}&q=${translatedMainWord}&num=1&safe=active&cx=${this.cx}&searchType=image&imgType=clipart`);
-        this.buildLinks(imageRequest.keywords, translatedMainWord).forEach(link => links.push(link));
-        console.log(translatedMainWord)
-        var results: ImageInformation[] = [];
-
-        for (var i = 0; i < links.length; i++) {
-            const request = this.http.get(links[i])
-            const res = await firstValueFrom(request);
-            imageMapper(res.data.items, imageRequest.keywords[i]).forEach(image => results.push(image));
-        }
-        return results
-    }
-
-    private buildLinks(keywords: string[], translatedMainWord: string) {
-        var links: string[] = []
-
-        for (var i = 0; i < keywords.length; i++) {
-            links.push(`https://www.googleapis.com/customsearch/v1?key=${this.apiKey}&q=${keywords[i]}}&num=1&cx=${this.cx}&searchType=image&imgType=clipart`)
-        }
-
-        return links;
-    }
-}
-
-function axios(dataUrl: string) {
-    throw new Error('Function not implemented.');
 }
 
