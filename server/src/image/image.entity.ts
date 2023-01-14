@@ -13,9 +13,12 @@ export class ImageEntity {
     contentFull: string
 
     @Column()
-    contentType: string
+    contentResized: string
 
     @Column()
     mimeType: string
+
+    @ManyToOne(type => ThinkingMapEntity, map => map.id, { cascade: true,})
+    map: ThinkingMapEntity
 }
 

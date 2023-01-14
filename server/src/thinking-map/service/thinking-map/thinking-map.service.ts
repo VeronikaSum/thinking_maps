@@ -18,7 +18,7 @@ export class ThinkingMapService {
     }
 
     async create(images: Express.Multer.File[], request: GenerateMapRequest) {
-        console.log(request)
+        console.log(images)
         const entity = new ThinkingMapEntity();
 
         entity.mainWord = images[0].originalname;
@@ -28,18 +28,31 @@ export class ThinkingMapService {
 
         entity.content = content;
 
-        // var savedImages: ImageEntity[] = [];
-        // for (var i = 0; i < images.length; i++) {
-        //     const imageEntity = new ImageEntity();
-        //     imageEntity.title = images[i].originalname;
-        //     console.log(images[i])
-        //     imageEntity.content = images[i].buffer.toString('base64')
-        //     savedImages.push(await this.imageRepository.save(imageEntity))
-        // }
+        const paths = [];
 
-        // entity.images = savedImages;
-        return await this.thinkingMapRepository.save(entity);
-    }
+        var savedImages: ImageEntity[] = [];
+        for (var i = 0; i < images.length; i++) {
+            const imageEntity = new ImageEntity();
+            imageEntity.title = images[i].originalname;
+            console.log(images[i])
+            const resizedPath = './resources/images/resized/'
+            imageEntity.contentResized = fs.readFileSync(resizedPath + images[i].filename, { encoding: 'base64' });
+            imageEntity.contentFull = fs.readFileSync(images[i].path, { encoding: 'base64' });
+            paths.push(images[i].path);
+            paths.push(resizedPath + images[i].filename)
+            imageEntity.mimeType = images[i].mimetype;
+            savedImages.push(imageEntity)
+        }
+
+        entity.images = savedImages;
+        console.log(entity)
+        const map = await this.thinkingMapRepository.save(entity);
+        paths.forEach(path => fs.unlink(path, (err) => {
+            if (err) throw err;
+          }));
+
+        return map;
+        }
 
     async resizeImage(image: Express.Multer.File, path: string) {
         const readImage = await Jimp.read(image.path);
@@ -51,15 +64,11 @@ export class ThinkingMapService {
     async mergeMap(images: Express.Multer.File[]): Promise<string> {
         console.log(images)
         const paths: string[] = [];
-        const resizedImagePath = './resources/images/resized/';
 
         for (var i = 0; i < images.length; i++) {
             const resizedImagePath = './resources/images/resized/' + images[i].filename;
-            const extention = images[i].mimetype === 'image/jpeg' ? '.jpeg' : '.png'
-
-            console.log('images[i]', images[i].filename)
+            
             await this.resizeImage(images[i], resizedImagePath);
-            console.log('images[i]', images[i].filename)
             paths.push(resizedImagePath);
         }
 

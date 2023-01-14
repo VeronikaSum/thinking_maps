@@ -36,3 +36,4 @@ lerna-debug.log*
 
 .env
 /resources/images
+thinkingMapDB.db

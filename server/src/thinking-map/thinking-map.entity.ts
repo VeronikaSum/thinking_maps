@@ -18,7 +18,7 @@ export class ThinkingMapEntity {
     @Column()
     content: string
 
-    @OneToMany(type => ImageEntity, image => image.id)
+    @OneToMany(type => ImageEntity, image => image.map, { cascade: ['insert', 'update'] })
     @JoinColumn()
     images: ImageEntity[]
 }

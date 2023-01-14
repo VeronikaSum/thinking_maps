@@ -33,7 +33,6 @@ export class ApiService {
     };
 
     async translateToLtText(inputs: string[]) {
-        console.log(inputs)
         const req = this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=lt',
             inputs.map(input => ({
                 text: input
@@ -68,9 +67,6 @@ export class ApiService {
         for (var i = 0; i < translatedWords.length; i++) {
             similarWords[i].word = translatedWords[i];
         }
-
-        console.log(request)
-        console.log(similarWords)
 
         return similarWords;
 
