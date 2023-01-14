@@ -30,14 +30,13 @@ function Table({ data, word }: TableProps) {
                 }
                 return item;
             }));
-
-            console.log(checkedItems)
         }
     }
 
     useEffect(() => {
         setIsFilesUploading(false)
     }, [checkedItems])
+
 
     const selectItem = (entry: SimilarWord) => {
         setCheckedItems([...checkedItems, {
@@ -47,7 +46,6 @@ function Table({ data, word }: TableProps) {
         }])
 
     }
-
 
     const addNewItem = (value: string) => {
         if (inputValue !== '') {
@@ -87,7 +85,6 @@ function Table({ data, word }: TableProps) {
         });
         
     }
-    console.log(checkedItems.length > 7)
 
     return (
         <><div className="grid grid-cols-2 gap-2">
@@ -138,7 +135,7 @@ function Table({ data, word }: TableProps) {
             </div>
         </div>
             <div className="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
-                <button disabled={checkedItems.length < 7 && !isFilesUploading} className="btn" onClick={() => { generateMap(); }}>Generuoti žemėlapį</button>
+                <button disabled={checkedItems.filter(item => !!item.image).length < 7 &&  !isFilesUploading} className="btn" onClick={() => { generateMap(); }}>Generuoti žemėlapį</button>
                 {thinkingMap !== null && (
                     <img src={thinkingMap.content} />
                 )}

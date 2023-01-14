@@ -1,8 +1,3 @@
-export type MapElement = {
-    word: string,
-    image: FormData,
-}
-
 export type GenerateMapRequest = {
     mapTitle: string,
     mainWord: string,
