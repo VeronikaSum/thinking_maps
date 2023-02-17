@@ -1,44 +1,40 @@
-import { useState } from "react";
-import Form from "../Components/Form";
-import Table from "../Components/Table";
-import { SearchWordRequest, Similar, SimilarWord } from "../Types";
-import ApiService from "../Services/ApiService";
-import Navbar from "../Components/Navbar";
-import { v4 as uuid } from 'uuid';
+import { useNavigate } from "react-router-dom";
+import { routes } from "../Common/routes";
 
-function MainPage() {
+export default function MainPage() {
+  const navigate = useNavigate();
 
-    const [similarWords, setSimilarWords] = useState<SimilarWord[]>([]);
-    const [mainWord, setMainWord] = useState('');
-
-    const onSubmit = async (data: SearchWordRequest) => {
-        const map = (data: Similar[]) => data.map((itemSimilarWord) => ({
-            id: uuid(),
-            ...itemSimilarWord,
-            checked: false,
-        }));
-
-        await ApiService.getSimilarWords(data)
-            .then(res => {
-                setSimilarWords(map(res));
-                setMainWord(data.searchWord)
-            });
-    }
-
-    return (
-        <div className='bg-gradient-to-r from-purple-200 min-h-screen pb-16'>
-            <Navbar />
-            <h1 className="text-center text-3xl font-bold mt-0 mb-6">Apibūdinimas – burbulo žemėlapis</h1>
-            <Form onSubmit={onSubmit} />
-            {
-                similarWords.length !== 0 && (
-                    <Table data={similarWords} word={mainWord} />
-                )
-            }
+  return (
+    <>
+      <div className="flex flex-col w-full lg:flex-row">
+        <div className="grid flex-grow h-32 card rounded-box place-items-center">
+          <h1 className="text-center text-3xl font-bold mt-6 mb-6">
+            Sukurkite savo žemėlapį
+          </h1>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(routes.createPage)}
+          >
+            Kurti
+          </button>
+          <h1 className="text-center text-3xl font-bold mt-6 mb-6">
+            Rinkitės iš jau sukurtų
+          </h1>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(routes.browse)}
+          >
+            Rinktis
+          </button>
         </div>
-
-    )
-
+        <div className="divider lg:divider-horizontal" />
+        <div className="grid flex-grow h-32 card rounded-box place-items-center">
+          <h1 className="text-center text-3xl font-bold mt-6 mb-6">
+            Pradėkite žaisti
+          </h1>
+          <button className="btn btn-primary">Žaisti</button>
+        </div>
+      </div>
+    </>
+  );
 }
-
-export default MainPage;
