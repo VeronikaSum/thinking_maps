@@ -37,3 +37,6 @@ lerna-debug.log*
 .env
 /resources/images
 thinkingMapDB.db
+
+# Digital Ocean app spec
+app-spec-docean.yaml
