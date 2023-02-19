@@ -5,6 +5,7 @@ import NoPage from "./Pages/NoPage";
 import { routes } from "./Common/routes";
 import Navbar from "./Components/Navbar";
 import BrowseMaps from "./Pages/BrowseMaps";
+import Profile from "./Components/Profile";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path={routes.mainPage} element={<MainPage />} />
           <Route path={routes.createPage} element={<MapCreatePage />} />
           <Route path={routes.browse} element={<BrowseMaps />} />
+          <Route path={routes.profile} element={<Profile />} />
           <Route path={routes.notFoundPage} element={<NoPage />} />
         </Routes>
       </div>
