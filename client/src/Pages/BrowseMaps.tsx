@@ -9,8 +9,6 @@ export default function BrowseMaps() {
     ThinkingMapService.getAllThinkingMaps().then((res) => setData(res));
   }, []);
 
-  console.log(data);
-
   if (!data) {
     return <></>;
   }

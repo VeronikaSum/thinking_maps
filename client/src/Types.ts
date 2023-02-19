@@ -1,37 +1,50 @@
 export type SearchWordRequest = {
-    searchWord: string,
-}
+  searchWord: string;
+};
 
 export type GenerateMapRequest = {
-    mapTitle: string,
-    mainWord: string,
-}
+  mapTitle: string;
+  mainWord: string;
+};
 
 export type Similar = {
-    word: string,
-    frequency: string,
-    score: number,
-}
+  word: string;
+  frequency: string;
+  score: number;
+};
 
 export type SimilarWord = {
-    id: string,
-    word: string,
-    frequency: string,
-    score: number,
-    checked: boolean,
-}
+  id: string;
+  word: string;
+  frequency: string;
+  score: number;
+  checked: boolean;
+};
 
 export type CheckedItem = {
-    id: string,
-    canBeDeleted: boolean,
-    word: string,
-    image?: File,
-}
+  id: string;
+  canBeDeleted: boolean;
+  word: string;
+  image?: File;
+};
 
 export type ThinkingMapEntity = {
-    id: number,
-    title: string,
-    mainWord: string,
-    createdAt: string,
-    content: string,
+  id: number;
+  title: string;
+  mainWord: string;
+  createdAt: string;
+  content: string;
+};
+
+export type UserRequest = {
+  authId: string;
+  firstName: string;
+  lastName: string;
+  institution: string;
+  email: string;
+};
+
+export interface User extends UserRequest {
+  id: string;
+  createdAt: Date;
 }

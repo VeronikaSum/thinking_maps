@@ -39,9 +39,7 @@ export class ThinkingMapService {
     var savedImages: ImageEntity[] = [];
     for (var i = 0; i < images.length; i++) {
       const imageEntity = new ImageEntity();
-      console.log(images[i].originalname);
       if (images[i].originalname.endsWith('0')) {
-        console.log(images[i]);
         imageEntity.isCorrect = false;
         images[i].originalname = images[i].originalname.slice(
           0,

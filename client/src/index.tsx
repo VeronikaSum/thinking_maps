@@ -14,7 +14,7 @@ root.render(
     domain={process.env.REACT_APP_AUTH_0_DOMAIN || ""}
     clientId={process.env.REACT_APP_AUTH_0_CLIENT_ID || ""}
     authorizationParams={{
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}${routes.requestInfo}`,
     }}
     useRefreshTokens
     cacheLocation="localstorage"

@@ -3,5 +3,6 @@ export const routes = {
   createPage: "/create",
   browse: "/browse",
   profile: "/profile",
+  requestInfo: "/request-info",
   notFoundPage: "*",
 };

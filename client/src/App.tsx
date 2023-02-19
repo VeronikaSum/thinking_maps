@@ -6,6 +6,7 @@ import { routes } from "./Common/routes";
 import Navbar from "./Components/Navbar";
 import BrowseMaps from "./Pages/BrowseMaps";
 import Profile from "./Components/Profile";
+import RequestInfo from "./Pages/RequestInfo";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path={routes.createPage} element={<MapCreatePage />} />
           <Route path={routes.browse} element={<BrowseMaps />} />
           <Route path={routes.profile} element={<Profile />} />
+          <Route path={routes.requestInfo} element={<RequestInfo />} />
           <Route path={routes.notFoundPage} element={<NoPage />} />
         </Routes>
       </div>

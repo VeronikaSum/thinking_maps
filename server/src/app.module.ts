@@ -4,6 +4,7 @@ import { ImageModule } from './image/image.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiModule } from './api/api.module';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
     }),
     ApiModule,
+    UserModule,
   ],
 })
 export class AppModule {}
