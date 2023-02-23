@@ -1,7 +1,11 @@
+import { group } from 'console';
+import { Group } from 'src/group/group.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -27,4 +31,11 @@ export class User {
 
   @CreateDateColumn()
   createdAt: string;
+
+  @OneToMany(() => Group, (group) => group.owner, {
+    cascade: ['insert', 'update'],
+    nullable: true,
+  })
+  @JoinColumn()
+  groups: Group[];
 }

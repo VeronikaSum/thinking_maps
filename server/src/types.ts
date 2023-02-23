@@ -21,3 +21,15 @@ export type UserRequest = {
   institution: string;
   email: string;
 };
+
+export type GroupRequest = {
+  name: string;
+  authId: string;
+  children: ChildRequest[];
+};
+
+export type ChildRequest = {
+  firstName: string;
+  lastName: string;
+  age: number;
+};
