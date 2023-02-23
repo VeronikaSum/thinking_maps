@@ -4,4 +4,8 @@ export const apiRoutes = {
 
   getUser: "/user/:id",
   createUser: "/user",
+
+  groupCreate: "/group",
+  getGroupsByUserId: "/group/user/:id",
+  getGroup: "/group/:id",
 };

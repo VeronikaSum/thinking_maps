@@ -17,9 +17,11 @@ class UserService {
   }
 
   async getUserByAuthId(id: string) {
-    return await http
-      .get(pathToUrl(apiRoutes.getUser, [id]))
-      .then((res) => res.data);
+    const path = pathToUrl(apiRoutes.getUser, [id]);
+    console.log(path);
+    if (path !== null) {
+      return await http.get(path).then((res) => res.data);
+    } else return null;
   }
 }
 

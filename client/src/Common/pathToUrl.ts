@@ -1,4 +1,10 @@
 export default function pathToUrl(url: string, ids: string[]) {
+  // ids.forEach((id) => {
+  //   if (!id) {
+  //     throw Error("id undefined");
+  //   }
+  // });
+
   const matches = url.match(/:([^\/]*)/g);
 
   if (!matches) {

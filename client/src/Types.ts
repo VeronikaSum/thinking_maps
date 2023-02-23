@@ -48,3 +48,25 @@ export interface User extends UserRequest {
   id: string;
   createdAt: Date;
 }
+
+export type GroupRequest = {
+  name: string;
+  authId: string;
+  children: Child[];
+};
+
+export type Child = {
+  firstName: string;
+  lastName: string;
+  age: number;
+};
+
+export interface ChildRequest extends Child {
+  group: string;
+}
+
+export type Group = {
+  id: string;
+  name: string;
+  child: Child[];
+};

@@ -5,7 +5,7 @@ import NoPage from "./Pages/NoPage";
 import { routes } from "./Common/routes";
 import Navbar from "./Components/Navbar";
 import BrowseMaps from "./Pages/BrowseMaps";
-import Profile from "./Components/Profile";
+import Profile from "./Components/userInfo/Profile";
 import RequestInfo from "./Pages/RequestInfo";
 
 function App() {
