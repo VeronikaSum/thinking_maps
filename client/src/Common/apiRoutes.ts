@@ -8,4 +8,6 @@ export const apiRoutes = {
   groupCreate: "/group",
   getGroupsByUserId: "/group/user/:id",
   getGroup: "/group/:id",
+
+  createGame: "/game",
 };

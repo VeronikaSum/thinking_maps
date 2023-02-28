@@ -29,7 +29,7 @@ export type CheckedItem = {
 };
 
 export type ThinkingMapEntity = {
-  id: number;
+  id: string;
   title: string;
   mainWord: string;
   createdAt: string;
@@ -69,4 +69,10 @@ export type Group = {
   id: string;
   name: string;
   child: Child[];
+};
+
+export type CreateGameMapRequest = {
+  mapId: string;
+  groupId: string;
+  userAuthId: string;
 };
