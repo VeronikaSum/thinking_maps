@@ -18,6 +18,10 @@ export class ThinkingMapService {
     private imageRepository: Repository<ImageEntity>,
   ) {}
 
+  async GetById(id: number): Promise<ThinkingMapEntity> {
+    return await this.thinkingMapRepository.findOneBy({ id: id });
+  }
+
   async getAll(): Promise<ThinkingMapEntity[]> {
     return await this.thinkingMapRepository.find();
   }

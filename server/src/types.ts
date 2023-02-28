@@ -33,3 +33,9 @@ export type ChildRequest = {
   lastName: string;
   age: number;
 };
+
+export type CreateGameMapRequest = {
+  mapId: string;
+  groupId: string;
+  userAuthId: string;
+};
