@@ -1,6 +1,7 @@
 export const apiRoutes = {
   getAllThinkingMaps: "/thinking-map",
   createThinkingMap: "/thinking-map",
+  getThinkingMapById: "/thinking-map/:id",
 
   getUser: "/user/:id",
   createUser: "/user",
@@ -10,4 +11,7 @@ export const apiRoutes = {
   getGroup: "/group/:id",
 
   createGame: "/game",
+  getGameById: "/game/:id",
+
+  getImagesByMapId: "/image/:id",
 };

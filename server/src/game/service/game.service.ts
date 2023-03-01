@@ -17,6 +17,17 @@ export class GameService {
     private readonly thinkingMapService: ThinkingMapService,
   ) {}
 
+  async GetById(id: any): Promise<Game> {
+    return await this.gameRepository.findOne({
+      relations: {
+        map: true,
+      },
+      where: {
+        id: id,
+      },
+    });
+  }
+
   async createNewGame(request: CreateGameMapRequest) {
     const game = new Game();
     game.owner = await this.userService.GetByAuthId(request.userAuthId);

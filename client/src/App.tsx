@@ -7,6 +7,7 @@ import Navbar from "./Components/Navbar";
 import BrowseMaps from "./Pages/BrowseMaps";
 import Profile from "./Components/userInfo/Profile";
 import RequestInfo from "./Pages/RequestInfo";
+import { GamePage } from "./Game/GamePage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <div className="bg-gradient-to-r from-purple-200 min-h-screen pb-16">
         <Routes>
           <Route path={routes.mainPage} element={<MainPage />} />
+          <Route path={routes.gamePage} element={<GamePage />} />
           <Route path={routes.createPage} element={<MapCreatePage />} />
           <Route path={routes.browse} element={<BrowseMaps />} />
           <Route path={routes.profile} element={<Profile />} />

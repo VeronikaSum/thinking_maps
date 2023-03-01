@@ -5,13 +5,26 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ImageService {
-    constructor(@InjectRepository(ImageEntity) private imageRespository: Repository<ImageEntity>) { }
+  constructor(
+    @InjectRepository(ImageEntity)
+    private imageRespository: Repository<ImageEntity>,
+  ) {}
 
-    async getAll(): Promise<ImageEntity[]> {
-        return await this.imageRespository.find()
-    }
+  async GetByThinkingMapId(id: string): Promise<ImageEntity[]> {
+    return await this.imageRespository.find({
+      where: {
+        map: {
+          id: +id,
+        },
+      },
+    });
+  }
 
-    async create(image: ImageEntity): Promise<ImageEntity> {
-        return await this.imageRespository.save(image);
-    }
+  async GetAll(): Promise<ImageEntity[]> {
+    return await this.imageRespository.find();
+  }
+
+  async create(image: ImageEntity): Promise<ImageEntity> {
+    return await this.imageRespository.save(image);
+  }
 }

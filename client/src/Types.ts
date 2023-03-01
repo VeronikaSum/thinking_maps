@@ -76,3 +76,18 @@ export type CreateGameMapRequest = {
   groupId: string;
   userAuthId: string;
 };
+
+export type GameResponse = {
+  id: string;
+  generatedCode: string;
+  map: ThinkingMapEntity;
+};
+
+export type ImageResponse = {
+  id: string;
+  title: string;
+  contentFull: string;
+  contentResized: string;
+  mimeType: string;
+  isCorrect: boolean;
+};

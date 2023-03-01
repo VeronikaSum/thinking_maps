@@ -5,4 +5,5 @@ export const routes = {
   profile: "/profile",
   requestInfo: "/request-info",
   notFoundPage: "*",
+  gamePage: "/game-page",
 };
