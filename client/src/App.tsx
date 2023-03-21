@@ -8,6 +8,7 @@ import BrowseMaps from "./Pages/BrowseMaps";
 import Profile from "./Components/userInfo/Profile";
 import RequestInfo from "./Pages/RequestInfo";
 import { GamePage } from "./Game/GamePage";
+import GameSelectionPage from "./Pages/GameSelectionPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path={routes.browse} element={<BrowseMaps />} />
           <Route path={routes.profile} element={<Profile />} />
           <Route path={routes.requestInfo} element={<RequestInfo />} />
+          <Route path={routes.gamePageSelect} element={<GameSelectionPage />} />
           <Route path={routes.notFoundPage} element={<NoPage />} />
         </Routes>
       </div>

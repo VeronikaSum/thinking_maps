@@ -91,3 +91,8 @@ export type ImageResponse = {
   mimeType: string;
   isCorrect: boolean;
 };
+
+export type Time = {
+  minutes: string;
+  seconds: string;
+};

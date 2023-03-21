@@ -14,8 +14,6 @@ export default function BrowseMaps() {
   const [selectedMapId, setSelectedMapId] = useState<string | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<string>("");
 
-  console.log(selectedGroup);
-
   useEffect(() => {
     ThinkingMapService.getAllThinkingMaps().then((res) => setData(res));
   }, []);

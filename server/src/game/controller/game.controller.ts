@@ -11,6 +11,12 @@ export class GameController {
   async GetById(@Param() params): Promise<Game> {
     return await this.gameService.GetById(params.id);
   }
+
+  @Get('/generated/:code')
+  async GetByCode(@Param() params): Promise<Game> {
+    return await this.gameService.GetByGeneratedCode(params.code);
+  }
+
   @Post()
   async CreateNewGame(@Body() request: CreateGameMapRequest) {
     return this.gameService.createNewGame(request);

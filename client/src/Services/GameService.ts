@@ -15,6 +15,12 @@ class GameService {
       .get(pathToUrl(apiRoutes.getGameById, [id]))
       .then((res) => res.data);
   }
+
+  async getByCode(code: string) {
+    return http
+      .get(pathToUrl(apiRoutes.getGameByCode, [code]))
+      .then((res) => res.data);
+  }
 }
 
 export default new GameService();

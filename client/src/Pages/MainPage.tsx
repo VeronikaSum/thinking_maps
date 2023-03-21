@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { routes } from "../Common/routes";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ export default function MainPage() {
           </h1>
           <button
             className="btn btn-primary"
-            onClick={() => navigate(routes.gamePage)}
+            onClick={() => navigate(routes.gamePageSelect)}
           >
             Žaisti
           </button>

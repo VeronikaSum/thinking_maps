@@ -28,6 +28,17 @@ export class GameService {
     });
   }
 
+  async GetByGeneratedCode(code: any): Promise<Game> {
+    return await this.gameRepository.findOne({
+      relations: {
+        map: true,
+      },
+      where: {
+        generatedCode: code,
+      },
+    });
+  }
+
   async createNewGame(request: CreateGameMapRequest) {
     const game = new Game();
     game.owner = await this.userService.GetByAuthId(request.userAuthId);
