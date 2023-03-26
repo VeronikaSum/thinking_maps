@@ -1,22 +1,19 @@
 import { CSSProperties, FC, useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
 import { ImageGameResponse, ImageTypes } from "./ImageTypes";
-import { Image } from "./Image";
 
-const style: CSSProperties = {
-  height: "12rem",
-  width: "12rem",
-  marginRight: "1.5rem",
-  marginBottom: "1.5rem",
-  color: "white",
-  padding: "1rem",
-  textAlign: "center",
-  fontSize: "1rem",
-  lineHeight: "normal",
-  float: "left",
-};
+interface ThinkingMapElementProps {
+  size: string | undefined;
+}
 
-export const ThinkingMapElement: FC = () => {
+export function ThinkingMapElement({ size }: ThinkingMapElementProps) {
+  const style: CSSProperties = {
+    height: `${size}px`,
+    width: `${size}px`,
+    color: "gray",
+    borderRadius: "50%",
+  };
+
   const addImageToMap = (item: ImageGameResponse) => {
     if (item.correct) {
       setImage(item);
@@ -55,18 +52,14 @@ export const ThinkingMapElement: FC = () => {
   }
 
   return (
-    <div
-      ref={dropTarget}
-      style={{ ...style, backgroundColor }}
-      data-testid="thinking_map"
-    >
-      {image && image.correct && (
+    <div ref={dropTarget} style={{ ...style, backgroundColor }}>
+      {image && image.correct && size && (
         <img
+          className={`rounded-[50%] flex justify-center`}
           src={"data:image/jpeg;base64," + image.contentResized}
-          alt=""
-          width={"200px"}
+          width={`${parseInt(size)}px`}
         />
       )}
     </div>
   );
-};
+}

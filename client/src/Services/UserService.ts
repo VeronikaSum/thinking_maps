@@ -18,7 +18,6 @@ class UserService {
 
   async getUserByAuthId(id: string) {
     const path = pathToUrl(apiRoutes.getUser, [id]);
-    console.log(path);
     if (path !== null) {
       return await http.get(path).then((res) => res.data);
     } else return null;

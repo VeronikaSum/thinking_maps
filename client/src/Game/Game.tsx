@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { ThinkingMapElement } from "./ThinkingMap";
 import { Image } from "./Image";
 import GameService from "../Services/GameService";
@@ -7,6 +7,7 @@ import ImageService from "../Services/ImageService";
 import { useNavigate, useParams } from "react-router-dom";
 import { routes } from "../Common/routes";
 import { Timer } from "./Timer";
+import $ from "jquery";
 
 function shuffleArray(array: []) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -16,19 +17,6 @@ function shuffleArray(array: []) {
     array[j] = temp;
   }
 }
-
-const style: CSSProperties = {
-  height: "12rem",
-  width: "12rem",
-  marginRight: "1.5rem",
-  marginBottom: "1.5rem",
-  color: "white",
-  padding: "1rem",
-  textAlign: "center",
-  fontSize: "1rem",
-  lineHeight: "normal",
-  float: "left",
-};
 
 export const Game: FC = function Game() {
   const [game, setGame] = useState<GameResponse | null>(null);
@@ -44,6 +32,7 @@ export const Game: FC = function Game() {
   const [time, setTime] = useState<number>(0);
   const [startGame, setStartGame] = useState(false);
   const [gameEnd, setGameEnd] = useState<boolean>(false);
+  const [size, setSize] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -107,77 +96,184 @@ export const Game: FC = function Game() {
     }
   }, [images]);
 
+  const divRef = useRef(null);
+  const [width, setWidth] = useState<number | undefined>(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (divRef.current) {
+        setWidth($("#game-window").width());
+        if (width) {
+          $("#game-window").height(width);
+          setSize(((width * 240) / 1000).toFixed(0));
+        }
+        console.log(width);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [width, size]);
+
   return (
-    <div>
+    <>
       <Timer setGameTime={setTime} start={startGame} stop={gameEnd} />
       {allMistakes && <div>{allMistakes.length + " klaidos(-ų)"}</div>}
-      {mainImage && (
-        <div style={{ ...style }}>
-          <img
-            src={"data:image/jpeg;base64," + mainImage.contentResized}
-            alt=""
-            width={"200px"}
-          />
+      <div className="card card-side">
+        <div
+          id="game-window"
+          ref={divRef}
+          className="bg-contain bg-[url('../resources/bubble-map.jpg')] bg-no-repeat w-[1000px] h-[1000px] ml-4 mr-4"
+        >
+          {size && width && mainImage && (
+            <>
+              <div
+                className={`relative`}
+                style={{
+                  height: `${size}px`,
+                  width: `${size}px`,
+                  top: `${((width * 30) / 1000).toFixed(0)}px`,
+                  left: `${(
+                    (width * (width / 2 - parseInt(size) / 2)) /
+                    width
+                  ).toFixed(0)}px`,
+                }}
+              >
+                <ThinkingMapElement size={size} />
+              </div>
+              <div
+                className={`relative`}
+                style={{
+                  height: `${size}px`,
+                  width: `${size}px`,
+                  left: `${((width * 30) / 1000).toFixed(0)}px`,
+                  bottom: `${((width * 40) / 1000).toFixed(0)}px`,
+                }}
+              >
+                <ThinkingMapElement size={size} />
+              </div>
+              <div
+                className={`relative`}
+                style={{
+                  height: `${size}px`,
+                  width: `${size}px`,
+                  left: `${((width * 730) / 1000).toFixed(0)}px`,
+                  bottom: `${((width * 280) / 1000).toFixed(0)}px`,
+                }}
+              >
+                <ThinkingMapElement size={size} />
+              </div>
+
+              <div
+                className={`relative`}
+                style={{
+                  height: `${size}px`,
+                  width: `${size}px`,
+                  left: `${((width * 395) / 1000).toFixed(0)}px`,
+                  bottom: `${((width * 325) / 1000).toFixed(0)}px`,
+                }}
+              >
+                <img
+                  src={"data:image/jpeg;base64," + mainImage.contentResized}
+                  alt=""
+                  className="rounded-[100px]"
+                  width={"200px"}
+                  height={`${size}`}
+                />
+              </div>
+
+              <div
+                className={`relative`}
+                style={{
+                  height: `${size}px`,
+                  width: `${size}px`,
+                  left: `${((width * 30) / 1000).toFixed(0)}px`,
+                  bottom: `${((width * 400) / 1000).toFixed(0)}px`,
+                }}
+              >
+                <ThinkingMapElement size={size} />
+              </div>
+              <div
+                className={`relative`}
+                style={{
+                  height: `${size}px`,
+                  width: `${size}px`,
+                  left: `${((width * 730) / 1000).toFixed(0)}px`,
+                  bottom: `${((width * 640) / 1000).toFixed(0)}px`,
+                }}
+              >
+                <ThinkingMapElement size={size} />
+              </div>
+              <div
+                className={`relative`}
+                style={{
+                  height: `${size}px`,
+                  width: `${size}px`,
+                  left: `${((width * 380) / 1000).toFixed(0)}px`,
+                  bottom: `${((width * 710) / 1000).toFixed(0)}px`,
+                }}
+              >
+                <ThinkingMapElement size={size} />
+              </div>
+            </>
+          )}
         </div>
-      )}
-      <div style={{ overflow: "hidden", clear: "both" }}>
-        <ThinkingMapElement />
-        <ThinkingMapElement />
-        <ThinkingMapElement />
-        <ThinkingMapElement />
-        <ThinkingMapElement />
-        <ThinkingMapElement />
-      </div>
-      <div style={{ overflow: "hidden", clear: "both" }}>
-        {images.map((image) => {
-          return (
-            <Image
-              id={image.id}
-              name={image.title.toLocaleUpperCase()}
-              content={image.contentResized}
-              correct={image.isCorrect}
-              setUpdateImages={setUpdateImages}
-              setSelectedImageId={setSelectedImageId}
-              setMistake={setMistake}
-            />
-          );
-        })}
-      </div>
-      <input type="checkbox" id="my-modal" className="modal-toggle" />
-      <div className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Šaunu! Tau pavyko!</h3>
-          <div className="modal-action">
-            <label
-              htmlFor={"my-modal"}
-              className="btn"
-              onClick={() => {
-                navigate(routes.mainPage);
-              }}
-            >
-              Baigti
-            </label>
+        <div className="w-1/3">
+          <div>
+            {images.map((image) => {
+              return (
+                <Image
+                  id={image.id}
+                  name={image.title.toLocaleUpperCase()}
+                  content={image.contentResized}
+                  correct={image.isCorrect}
+                  setUpdateImages={setUpdateImages}
+                  setSelectedImageId={setSelectedImageId}
+                  setMistake={setMistake}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <input type="checkbox" id="my-modal" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Šaunu! Tau pavyko!</h3>
+            <div className="modal-action">
+              <label
+                htmlFor={"my-modal"}
+                className="btn"
+                onClick={() => {
+                  navigate(routes.mainPage);
+                }}
+              >
+                Baigti
+              </label>
+            </div>
+          </div>
+        </div>
+        <input type="checkbox" id="my-modal-start" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Labas! Ar tu pasiruošęs?</h3>
+            <div className="modal-action">
+              <label
+                htmlFor={"my-modal-start"}
+                className="btn"
+                onClick={() => {
+                  setOpenStartModal(false);
+                  setStartGame(true);
+                }}
+              >
+                Pradėti
+              </label>
+            </div>
           </div>
         </div>
       </div>
-      <input type="checkbox" id="my-modal-start" className="modal-toggle" />
-      <div className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Labas! Ar tu pasiruošęs?</h3>
-          <div className="modal-action">
-            <label
-              htmlFor={"my-modal-start"}
-              className="btn"
-              onClick={() => {
-                setOpenStartModal(false);
-                setStartGame(true);
-              }}
-            >
-              Pradėti
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface TimerProps {
   setGameTime: Dispatch<SetStateAction<number>>;
@@ -7,25 +7,24 @@ interface TimerProps {
 }
 
 export function Timer({ setGameTime, stop, start }: TimerProps) {
-  var minutesLabel = document.getElementById("minutes");
-  var secondsLabel = document.getElementById("seconds");
-  let intervalSet = false;
+  const [seconds, setSeconds] = useState("00");
+  const [minutes, setMinutes] = useState("00");
   var totalSeconds = 0;
-  if (start && !intervalSet) {
-    setInterval(setTime, 1000);
-    intervalSet = true;
-  }
+
+  useEffect(() => {
+    const interval = setInterval(setTime, 1000);
+    if (stop) {
+      clearInterval(interval);
+      setGameTime(totalSeconds);
+    }
+  }, [start, stop]);
 
   function setTime() {
-    if (start) {
-      ++totalSeconds;
-      if (secondsLabel && minutesLabel && !stop) {
-        secondsLabel.innerHTML = pad(totalSeconds % 60);
-        minutesLabel.innerHTML = pad((totalSeconds / 60).toFixed(0));
-      }
-
-      if (stop) {
-        setGameTime(totalSeconds);
+    if (start && !stop) {
+      if (seconds && minutes && !stop) {
+        totalSeconds = totalSeconds + 1;
+        setSeconds(pad(totalSeconds % 60));
+        setMinutes(pad((totalSeconds / 60).toFixed(0)));
       }
     }
   }
@@ -41,9 +40,9 @@ export function Timer({ setGameTime, stop, start }: TimerProps) {
 
   return (
     <>
-      <label id="minutes">00</label>
+      <label id="minutes">{minutes}</label>
       <label id="colon">:</label>
-      <label id="seconds">00</label>
+      <label id="seconds">{seconds}</label>
     </>
   );
 }

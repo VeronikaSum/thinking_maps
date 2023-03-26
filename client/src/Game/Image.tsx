@@ -11,6 +11,7 @@ const style: CSSProperties = {
   marginBottom: "1.5rem",
   cursor: "move",
   float: "left",
+  fontSize: "12px",
 };
 
 export interface ImageProps {
@@ -108,7 +109,7 @@ export const Image: FC<ImageProps> = function Image({
       <img
         ref={drag}
         src={"data:image/jpeg;base64," + content}
-        width={"200px"}
+        width={"150px"}
         style={{ opacity }}
       />
     </div>

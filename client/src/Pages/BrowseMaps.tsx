@@ -47,8 +47,6 @@ export default function BrowseMaps() {
     setShowError(false);
   };
 
-  console.log(groups);
-
   if (!data) {
     return <></>;
   }
