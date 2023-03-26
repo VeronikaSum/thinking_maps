@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
-import { CheckedItem } from "../Types";
+import { CheckedItem } from "../../Types";
 
 interface WordAndImageSelectionProps {
   header: string;

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
-import { CheckedItem, GenerateMapRequest, ThinkingMapEntity } from "../Types";
-import ThinkingMapService from "../Services/ThinkingMapService";
+import {
+  CheckedItem,
+  GenerateMapRequest,
+  ThinkingMapEntity,
+} from "../../Types";
+import ThinkingMapService from "../../Services/ThinkingMapService";
 import WordAndImageSelection from "./WordAndImageSelection";
 
 interface MapCreateProps {

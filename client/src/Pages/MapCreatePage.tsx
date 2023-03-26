@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Form from "../Components/Form";
-import MapCreate from "../Components/MapCreate";
+import Form from "../Components/mapCreation/Form";
+import MapCreate from "../Components/mapCreation/MapCreate";
 import { SearchWordRequest } from "../Types";
 
 function MapCreatePage() {

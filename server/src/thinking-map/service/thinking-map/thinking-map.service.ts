@@ -18,6 +18,10 @@ export class ThinkingMapService {
     private imageRepository: Repository<ImageEntity>,
   ) {}
 
+  async GetById(id: number): Promise<ThinkingMapEntity> {
+    return await this.thinkingMapRepository.findOneBy({ id: id });
+  }
+
   async getAll(): Promise<ThinkingMapEntity[]> {
     return await this.thinkingMapRepository.find();
   }
@@ -39,9 +43,7 @@ export class ThinkingMapService {
     var savedImages: ImageEntity[] = [];
     for (var i = 0; i < images.length; i++) {
       const imageEntity = new ImageEntity();
-      console.log(images[i].originalname);
       if (images[i].originalname.endsWith('0')) {
-        console.log(images[i]);
         imageEntity.isCorrect = false;
         images[i].originalname = images[i].originalname.slice(
           0,

@@ -1,5 +1,6 @@
 import { apiRoutes } from "../Common/apiRoutes";
 import http from "../Common/http-common";
+import pathToUrl from "../Common/pathToUrl";
 
 class ThinkingMapService {
   async postThinkingMap(request: FormData) {
@@ -15,6 +16,12 @@ class ThinkingMapService {
 
   async getAllThinkingMaps() {
     return http.get(apiRoutes.getAllThinkingMaps).then((res) => res.data);
+  }
+
+  async getById(id: string) {
+    return http
+      .get(pathToUrl(apiRoutes.getThinkingMapById, [id]))
+      .then((res) => res.data);
   }
 }
 
