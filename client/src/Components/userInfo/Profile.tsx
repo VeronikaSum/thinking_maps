@@ -105,6 +105,14 @@ function Profile() {
           </div>
         </div>
       </div>
+
+      <div className="grid flex-grow bg-base-100 card rounded-box place-items-center w-96 shadow-xl mt-4 ml-4">
+        <div className="card-body">
+          <h2 className="card-title text-center text-2xl font-bold ">
+            Jūsų sukurti žaidimai:
+          </h2>
+        </div>
+      </div>
     </div>
   );
 }

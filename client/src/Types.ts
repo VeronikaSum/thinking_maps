@@ -56,6 +56,7 @@ export type GroupRequest = {
 };
 
 export type Child = {
+  id: string;
   firstName: string;
   lastName: string;
   age: number;
@@ -81,6 +82,7 @@ export type GameResponse = {
   id: string;
   generatedCode: string;
   map: ThinkingMapEntity;
+  group: Group;
 };
 
 export type ImageResponse = {

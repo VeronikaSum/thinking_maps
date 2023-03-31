@@ -32,6 +32,7 @@ export class GameService {
     return await this.gameRepository.findOne({
       relations: {
         map: true,
+        group: true,
       },
       where: {
         generatedCode: code,

@@ -5,6 +5,6 @@ export const routes = {
   profile: "/profile",
   requestInfo: "/request-info",
   notFoundPage: "*",
-  gamePage: "/game-page/:id",
+  gamePage: "/game-page/:id/child/:childId",
   gamePageSelect: "/game/select",
 };

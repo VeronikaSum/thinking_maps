@@ -1,7 +1,6 @@
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Group, GroupRequest } from "../Types";
 import GroupService from "../Services/GroupService";
-import { serialize } from "v8";
 
 type AddGroupFormProps = {
   authId: string;

@@ -8,6 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { routes } from "../Common/routes";
 import { Timer } from "./Timer";
 import $ from "jquery";
+import { toast } from "react-toastify";
+import { Fireworks } from "@fireworks-js/react";
 
 function shuffleArray(array: []) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -21,6 +23,7 @@ function shuffleArray(array: []) {
 export const Game: FC = function Game() {
   const [game, setGame] = useState<GameResponse | null>(null);
   const [images, setImages] = useState<ImageResponse[]>([]);
+  const [correctImages, setCorrectImages] = useState<ImageResponse[]>([]);
   const [mainImage, setMainImages] = useState<ImageResponse | null>(null);
   const [updateImages, setUpdateImages] = useState<boolean>(false);
   const [selectedImageId, setSelectedImageId] = useState<string | undefined>(
@@ -35,6 +38,23 @@ export const Game: FC = function Game() {
   const [size, setSize] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
   const { id } = useParams();
+  let cluesCount = 0;
+
+  const clueToast = () => {
+    const imageTitle = correctImages.at(
+      Math.random() * correctImages.length
+    )?.title;
+    if (imageTitle) {
+      toast.info(`Tavo užuomina - ${imageTitle}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+      });
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -85,7 +105,10 @@ export const Game: FC = function Game() {
   }, [mistake, setMistake, setAllMistakes, allMistakes]);
 
   useEffect(() => {
-    if (images.length === 5) {
+    if (
+      images.length !== 0 &&
+      images.filter((image) => image.isCorrect).length === 0
+    ) {
       setGameEnd(true);
       var element = document.getElementById(
         "my-modal"
@@ -107,7 +130,6 @@ export const Game: FC = function Game() {
           $("#game-window").height(width);
           setSize(((width * 240) / 1000).toFixed(0));
         }
-        console.log(width);
       }
     };
 
@@ -120,13 +142,11 @@ export const Game: FC = function Game() {
 
   return (
     <>
-      <Timer setGameTime={setTime} start={startGame} stop={gameEnd} />
-      {allMistakes && <div>{allMistakes.length + " klaidos(-ų)"}</div>}
-      <div className="card card-side">
+      <div className={`card card-side`}>
         <div
           id="game-window"
           ref={divRef}
-          className="bg-contain bg-[url('../resources/bubble-map.jpg')] bg-no-repeat w-[1000px] h-[1000px] ml-4 mr-4"
+          className="bg-contain rounded-lg bg-[url('/public/resources/bubble-map.jpg')] bg-no-repeat w-2/5 h-[1000px] ml-4 mr-4 mt-4"
         >
           {size && width && mainImage && (
             <>
@@ -166,7 +186,6 @@ export const Game: FC = function Game() {
               >
                 <ThinkingMapElement size={size} />
               </div>
-
               <div
                 className={`relative`}
                 style={{
@@ -184,7 +203,6 @@ export const Game: FC = function Game() {
                   height={`${size}`}
                 />
               </div>
-
               <div
                 className={`relative`}
                 style={{
@@ -221,8 +239,35 @@ export const Game: FC = function Game() {
             </>
           )}
         </div>
-        <div className="w-1/3">
-          <div>
+        <div className="mt-4 w-3/5">
+          <div className="flex justify-start stats shadow mb-2 mr-4">
+            <div className="stat place-items-center">
+              <div className="stat-title">Laikas</div>
+              <div className="stat-value">
+                <Timer setGameTime={setTime} start={startGame} stop={gameEnd} />
+              </div>
+            </div>
+            <div className="stat place-items-center">
+              <div className="stat-title">Klaidos</div>
+              <div className="stat-value">{allMistakes.length}</div>
+            </div>
+            <div className="stat place-items-center">
+              <div className="stat-title">Užuomina</div>
+              <div className="stat-value">
+                <button
+                  className="btn btn-primary btn-outline mx-auto w-full btn-wide mb-4"
+                  type="button"
+                  onClick={() => {
+                    clueToast();
+                    cluesCount++;
+                  }}
+                >
+                  Pagalba
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="grid gap-0 grid-cols-5 grid-rows-3">
             {images.map((image) => {
               return (
                 <Image
@@ -259,10 +304,13 @@ export const Game: FC = function Game() {
         <div className="modal">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Labas! Ar tu pasiruošęs?</h3>
-            <div className="modal-action">
+            <div className="flex justify-end mt-4">
+              <img src="/resources/donkey.png" width={"150px"} />
+            </div>
+            <div className="flex justify-start modal-action ">
               <label
                 htmlFor={"my-modal-start"}
-                className="btn"
+                className="btn btn-primary w-full"
                 onClick={() => {
                   setOpenStartModal(false);
                   setStartGame(true);
@@ -274,6 +322,24 @@ export const Game: FC = function Game() {
           </div>
         </div>
       </div>
+      {gameEnd && (
+        <Fireworks
+          options={{
+            rocketsPoint: {
+              min: 0,
+              max: 100,
+            },
+          }}
+          style={{
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            position: "fixed",
+            background: "#9ca4b38a",
+          }}
+        />
+      )}
     </>
   );
 };
