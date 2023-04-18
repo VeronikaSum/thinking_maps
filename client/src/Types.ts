@@ -56,6 +56,7 @@ export type GroupRequest = {
 };
 
 export type Child = {
+  id: string;
   firstName: string;
   lastName: string;
   age: number;
@@ -81,6 +82,7 @@ export type GameResponse = {
   id: string;
   generatedCode: string;
   map: ThinkingMapEntity;
+  group: Group;
 };
 
 export type ImageResponse = {
@@ -95,4 +97,24 @@ export type ImageResponse = {
 export type Time = {
   minutes: string;
   seconds: string;
+};
+
+export type PlayedGameRequest = {
+  playTime: string;
+  mistakes: string[];
+  cluesCount: number;
+  playerId: string;
+  gameId: string;
+  authId: string;
+};
+
+export type PlayedGameResponse = {
+  id: number;
+  playTime: string;
+  mistakes: string[];
+  cluesCount: number;
+  playedAt: string;
+  player: Child;
+  game: GameResponse;
+  auth: User;
 };

@@ -10,6 +10,7 @@ import { ChildModule } from './child/child.module';
 import { GameController } from './game/controller/game.controller';
 import { GameService } from './game/service/game.service';
 import { GameModule } from './game/game.module';
+import { PlayedGameModule } from './played-games/played-game.module';
 
 @Module({
   imports: [
@@ -21,12 +22,14 @@ import { GameModule } from './game/game.module';
       database: 'thinkingMapDB.db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
+      autoLoadEntities: true,
     }),
     ApiModule,
     UserModule,
     GroupModule,
     ChildModule,
     GameModule,
+    PlayedGameModule,
   ],
 })
 export class AppModule {}

@@ -9,6 +9,9 @@ import Profile from "./Components/userInfo/Profile";
 import RequestInfo from "./Pages/RequestInfo";
 import { GamePage } from "./Game/GamePage";
 import GameSelectionPage from "./Pages/GameSelectionPage";
+import GameDetailsView from "./Pages/GameDetailsView";
+import GroupViewPage from "./Pages/GroupViewPage";
+import GamesViewPage from "./Pages/GamesViewPage";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
           <Route path={routes.profile} element={<Profile />} />
           <Route path={routes.requestInfo} element={<RequestInfo />} />
           <Route path={routes.gamePageSelect} element={<GameSelectionPage />} />
+          <Route path={routes.gameDetails} element={<GameDetailsView />} />
+          <Route path={routes.gameDetailsView} element={<GamesViewPage />} />
+          <Route path={routes.groupDetails} element={<GroupViewPage />} />
           <Route path={routes.notFoundPage} element={<NoPage />} />
         </Routes>
       </div>

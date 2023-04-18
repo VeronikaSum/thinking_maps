@@ -23,6 +23,7 @@ export function Timer({ setGameTime, stop, start }: TimerProps) {
     if (start && !stop) {
       if (seconds && minutes && !stop) {
         totalSeconds = totalSeconds + 1;
+        setGameTime(totalSeconds);
         setSeconds(pad(totalSeconds % 60));
         setMinutes(pad((totalSeconds / 60).toFixed(0)));
       }

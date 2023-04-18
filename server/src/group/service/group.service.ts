@@ -28,7 +28,14 @@ export class GroupService {
   }
 
   async GetById(id: any): Promise<Group> {
-    return await this.groupRepository.findOneBy({ id });
+    return await this.groupRepository.findOne({
+      relations: {
+        child: true,
+      },
+      where: {
+        id: id,
+      },
+    });
   }
   async Create(request: GroupRequest) {
     const group = new Group();

@@ -10,11 +10,14 @@ export class ChildService {
   constructor(
     @InjectRepository(Child)
     private childRepository: Repository<Child>,
-    private groupService: GroupService,
   ) {}
 
   async GetById(id: any): Promise<Child> {
-    return await this.childRepository.findOneBy(id);
+    return await this.childRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
   }
   async GetByGroupId(id: any): Promise<Child[]> {
     return await this.childRepository.findBy({ group: { id: id } });
@@ -24,8 +27,6 @@ export class ChildService {
     child.firstName = request.firstName;
     child.lastName = request.lastName;
     child.age = request.age;
-
-    // child.group = await this.groupService.GetById(request.group);
 
     this.childRepository.save(child);
   }

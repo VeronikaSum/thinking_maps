@@ -33,5 +33,6 @@ import { ImageEntity } from 'src/image/image.entity';
     ImageService,
   ],
   controllers: [GameController],
+  exports: [GameService],
 })
 export class GameModule {}

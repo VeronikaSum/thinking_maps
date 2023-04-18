@@ -12,6 +12,11 @@ export class GameController {
     return await this.gameService.GetById(params.id);
   }
 
+  @Get('/user/:id')
+  async GetAllByAuthId(@Param() params): Promise<Game[]> {
+    return await this.gameService.GetByAuthId(params.id);
+  }
+
   @Get('/generated/:code')
   async GetByCode(@Param() params): Promise<Game> {
     return await this.gameService.GetByGeneratedCode(params.code);

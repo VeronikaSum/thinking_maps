@@ -4,11 +4,11 @@ import { ImageTypes } from "./ImageTypes";
 import { toast } from "react-toastify";
 
 const style: CSSProperties = {
-  border: "1px dashed gray",
+  border: "2px solid gray",
   backgroundColor: "white",
-  padding: "0.5rem 1rem",
-  marginRight: "1.5rem",
-  marginBottom: "1.5rem",
+  width: "150px",
+  height: "150px",
+  margin: "4px",
   cursor: "move",
   float: "left",
   fontSize: "12px",
@@ -40,23 +40,19 @@ export const Image: FC<ImageProps> = function Image({
   const incorrect = () =>
     toast.error("Neteisingai 😥. Pabandyk iš naujo!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
       theme: "colored",
     });
   const correctAnswer = () =>
     toast.success("Teisingai! Taip ir toliau!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
       theme: "colored",
     });
 
@@ -104,12 +100,12 @@ export const Image: FC<ImageProps> = function Image({
 
   const opacity = isDragging ? 0.4 : 1;
   return (
-    <div ref={drag} style={{ ...style }} data-testid={`image`}>
-      {name}
+    <div ref={drag} style={{ ...style }} className="rounded-lg">
+      <div className="text-sm">{name}</div>
       <img
         ref={drag}
         src={"data:image/jpeg;base64," + content}
-        width={"150px"}
+        width={"125px"}
         style={{ opacity }}
       />
     </div>

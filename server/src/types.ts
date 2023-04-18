@@ -39,3 +39,13 @@ export type CreateGameMapRequest = {
   groupId: string;
   userAuthId: string;
 };
+
+export type PlayedGameRequest = {
+  id: number;
+  playTime: string;
+  mistakes: string[];
+  cluesCount: number;
+  playerId: string;
+  gameId: string;
+  authId: string;
+};

@@ -8,7 +8,7 @@ function Navbar() {
   const navigate = useNavigate();
   const { user } = useAuth0();
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 mb-0">
       <div className="flex-1" onClick={() => navigate(routes.mainPage)}>
         <a className="btn btn-ghost normal-case text-xl">
           Mąstymo žemėlapių kūrimo įrankis
@@ -38,7 +38,13 @@ function Navbar() {
             className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li onClick={() => navigate(routes.profile)}>
-              <a>Profilis</a>
+              <a>Mano profilis</a>
+            </li>
+            <li onClick={() => navigate(routes.groupDetails)}>
+              <a>Mano grupės</a>
+            </li>
+            <li onClick={() => navigate(routes.gameDetailsView)}>
+              <a>Mano žaidimai</a>
             </li>
             <li>
               <LogoutButton />
