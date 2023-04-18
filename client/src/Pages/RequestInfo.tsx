@@ -13,13 +13,15 @@ export default function RequestInfo() {
   const navigate = useNavigate();
   useEffect(() => {
     UserService.getUserByAuthId(user?.sub!).then((res) => {
-      setAlreadyRegistered(res.length !== 0 ? true : false);
+      setAlreadyRegistered(res && res.length !== 0);
     });
-  }, []);
+  }, [user, user?.sub]);
 
-  if (alreadyRegistered) {
-    navigate(routes.mainPage);
-  }
+  useEffect(() => {
+    if (alreadyRegistered) {
+      navigate(routes.mainPage);
+    }
+  }, [alreadyRegistered]);
 
   const onSubmit = (formData: any) => {
     const request: UserRequest = {

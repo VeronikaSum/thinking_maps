@@ -126,7 +126,6 @@ export const Game: FC = function Game() {
         cluesCount: cluesCount,
         playerId: childId!,
         gameId: game!.id,
-        authId: user!.sub!,
       };
 
       PlayedGameService.createPlayedGame(request);

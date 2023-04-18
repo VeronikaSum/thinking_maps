@@ -10,9 +10,7 @@ function Navbar() {
   return (
     <div className="navbar bg-base-100 mb-0">
       <div className="flex-1" onClick={() => navigate(routes.mainPage)}>
-        <a className="btn btn-ghost normal-case text-xl">
-          Mąstymo žemėlapių kūrimo įrankis
-        </a>
+        <a className="btn btn-ghost normal-case text-xl">Mąstymo žemėlapiai</a>
       </div>
       {!user && <LoginButton />}
       {user && (
