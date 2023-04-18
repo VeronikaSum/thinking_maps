@@ -33,6 +33,7 @@ function MapCreate({ word }: MapCreateProps) {
 
   const [groups, setGroups] = useState<Group[]>([]);
   const [showError, setShowError] = useState<boolean>(false);
+  const [errorText, setErrorText] = useState<string>("");
   const [triedSubmitting, setTriedSubmitting] = useState<boolean>(false);
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -53,6 +54,19 @@ function MapCreate({ word }: MapCreateProps) {
   const createGameMap = async () => {
     setTriedSubmitting(true);
     if (title === "" || selectedGroup.length === 0) {
+      setErrorText(
+        "Negalima kurti žaidimo be pasirinktos grupės arba pavadinimo"
+      );
+      setShowError(true);
+      return;
+    }
+    await generateMap();
+  };
+
+  const createGameMapWithoutGroup = async () => {
+    setTriedSubmitting(true);
+    if (title === "") {
+      setErrorText("Negalima kurti žaidimo be pavadinimo");
       setShowError(true);
       return;
     }
@@ -83,15 +97,19 @@ function MapCreate({ word }: MapCreateProps) {
     });
 
     ThinkingMapService.postThinkingMap(formData).then((data) => {
-      setThinkingMap(data);
-      const request: CreateGameMapRequest = {
-        mapId: data.id,
-        groupId: selectedGroup,
-        userAuthId: user!.sub!,
-      };
-      GameService.createGame(request).then(() => {
-        navigate(routes.gameDetailsView);
-      });
+      if (selectedGroup) {
+        setThinkingMap(data);
+        const request: CreateGameMapRequest = {
+          mapId: data.id,
+          groupId: selectedGroup,
+          userAuthId: user!.sub!,
+        };
+        GameService.createGame(request).then(() => {
+          navigate(routes.gameDetailsView);
+        });
+      } else {
+        navigate(routes.mainPage);
+      }
     });
   };
 
@@ -157,12 +175,22 @@ function MapCreate({ word }: MapCreateProps) {
               </select>
             </div>
             {showError && triedSubmitting && (
-              <p className="text-red-600">
-                Negalima kurti žaidimo be pasirinktos grupės arba pavadinimo
-              </p>
+              <p className="text-red-600">{errorText}</p>
             )}
           </p>
           <div className="modal-action">
+            <label htmlFor={"my-modal"} className="btn btn-secondary">
+              Grįžti
+            </label>
+            <label
+              htmlFor={selectedGroup ? "my-modal" : ""}
+              className="btn btn-secondary"
+              onClick={() => {
+                createGameMapWithoutGroup();
+              }}
+            >
+              Kurti tik žemėlapį
+            </label>
             <label
               htmlFor={selectedGroup ? "my-modal" : ""}
               className="btn"
@@ -170,7 +198,7 @@ function MapCreate({ word }: MapCreateProps) {
                 createGameMap();
               }}
             >
-              Sukurti
+              Kurti žaidimą
             </label>
           </div>
         </div>
