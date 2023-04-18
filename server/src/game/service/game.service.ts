@@ -17,10 +17,26 @@ export class GameService {
     private readonly thinkingMapService: ThinkingMapService,
   ) {}
 
+  async GetByAuthId(id: any): Promise<Game[]> {
+    return await this.gameRepository.find({
+      relations: {
+        map: true,
+      },
+      where: {
+        owner: {
+          authId: id,
+        },
+      },
+    });
+  }
+
   async GetById(id: any): Promise<Game> {
     return await this.gameRepository.findOne({
       relations: {
         map: true,
+        group: {
+          child: true,
+        },
       },
       where: {
         id: id,

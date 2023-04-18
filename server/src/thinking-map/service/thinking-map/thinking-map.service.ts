@@ -3,7 +3,7 @@ import { ThinkingMapEntity } from 'src/thinking-map/thinking-map.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ImageEntity } from 'src/image/image.entity';
-import { GenerateMapRequest, ImageType } from 'src/types';
+import { GenerateMapRequest } from 'src/types';
 import mergeImages = require('merge-images');
 import { Canvas, Image } from 'canvas';
 import * as fs from 'fs';
@@ -26,11 +26,11 @@ export class ThinkingMapService {
     return await this.thinkingMapRepository.find();
   }
 
-  async create(images: Express.Multer.File[], request: GenerateMapRequest) {
+  async create(images: Express.Multer.File[], request: any) {
     const entity = new ThinkingMapEntity();
 
-    entity.mainWord = images[0].originalname;
-    entity.title = request.mapTitle || Date.now() + '_map';
+    entity.mainWord = JSON.parse(request.request).mainWord;
+    entity.title = JSON.parse(request.request).mapTitle;
 
     const content = await this.mergeMap(images).then((res) => {
       return res;

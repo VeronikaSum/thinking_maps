@@ -4,6 +4,7 @@ import { CheckedItem } from "../../Types";
 
 interface WordAndImageSelectionProps {
   header: string;
+  helpText: string;
   placeholder: string;
   setAddedItems: SetStateAction<any>;
   setUploadCompleted: SetStateAction<any>;
@@ -16,6 +17,7 @@ export default function WordAndImageSelection({
   setAddedItems,
   setUploadCompleted,
   mainWord,
+  helpText,
 }: WordAndImageSelectionProps) {
   const [checkedItems, setCheckedItems] = useState<CheckedItem[]>(
     mainWord ? [mainWord] : []
@@ -73,11 +75,7 @@ export default function WordAndImageSelection({
   return (
     <div className="card max-w-full bg-base-100 shadow-xl">
       <h1 className="text-center text-2xl font-bold mt-6 mb-6">{header}</h1>
-      <progress
-        className="progress progress-success w-56 justify-center flex flex-wrap"
-        value={progressValue}
-        max={maxProgressValue}
-      />
+      <h1 className="text-center text-xl mt-6 mb-6">{helpText}</h1>
       <div className="grid grid-cols-2 gap-2">
         <div className="mx-auto mt-2">
           <input

@@ -12,7 +12,12 @@ export const apiRoutes = {
 
   createGame: "/game",
   getGameById: "/game/:id",
+  getGameByAuthId: "/game/user/:id",
   getGameByCode: "/game/generated/:code",
 
   getImagesByMapId: "/image/:id",
+
+  createPlayedGame: "/played-game",
+  getPlayedGameById: "/played-game/:id",
+  getPlayedGamesByPlayer: "/played-game/:gameId/child/:id",
 };

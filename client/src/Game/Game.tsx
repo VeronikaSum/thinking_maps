@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { ThinkingMapElement } from "./ThinkingMap";
 import { Image } from "./Image";
 import GameService from "../Services/GameService";
-import { GameResponse, ImageResponse, Time } from "../Types";
+import { GameResponse, ImageResponse, PlayedGameRequest, Time } from "../Types";
 import ImageService from "../Services/ImageService";
 import { useNavigate, useParams } from "react-router-dom";
 import { routes } from "../Common/routes";
@@ -10,6 +10,8 @@ import { Timer } from "./Timer";
 import $ from "jquery";
 import { toast } from "react-toastify";
 import { Fireworks } from "@fireworks-js/react";
+import PlayedGameService from "../Services/PlayedGameService";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function shuffleArray(array: []) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -23,7 +25,6 @@ function shuffleArray(array: []) {
 export const Game: FC = function Game() {
   const [game, setGame] = useState<GameResponse | null>(null);
   const [images, setImages] = useState<ImageResponse[]>([]);
-  const [correctImages, setCorrectImages] = useState<ImageResponse[]>([]);
   const [mainImage, setMainImages] = useState<ImageResponse | null>(null);
   const [updateImages, setUpdateImages] = useState<boolean>(false);
   const [selectedImageId, setSelectedImageId] = useState<string | undefined>(
@@ -37,10 +38,12 @@ export const Game: FC = function Game() {
   const [gameEnd, setGameEnd] = useState<boolean>(false);
   const [size, setSize] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, childId } = useParams();
   let cluesCount = 0;
+  const { user } = useAuth0();
 
   const clueToast = () => {
+    const correctImages = images.filter((img) => img.isCorrect);
     const imageTitle = correctImages.at(
       Math.random() * correctImages.length
     )?.title;
@@ -116,6 +119,17 @@ export const Game: FC = function Game() {
       if (element) {
         element.checked = true;
       }
+
+      const request: PlayedGameRequest = {
+        playTime: time.toString(),
+        mistakes: allMistakes,
+        cluesCount: cluesCount,
+        playerId: childId!,
+        gameId: game!.id,
+        authId: user!.sub!,
+      };
+
+      PlayedGameService.createPlayedGame(request);
     }
   }, [images]);
 

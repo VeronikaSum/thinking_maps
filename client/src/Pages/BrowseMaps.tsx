@@ -88,6 +88,7 @@ export default function BrowseMaps() {
             </h3>
             <p className="py-4">
               <select
+                className="select select-bordered w-full max-w-xs"
                 value={selectedGroup}
                 onChange={(e) => setSelectedGroup(e.target?.value)}
               >

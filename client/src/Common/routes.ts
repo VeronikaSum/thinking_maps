@@ -7,4 +7,7 @@ export const routes = {
   notFoundPage: "*",
   gamePage: "/game-page/:id/child/:childId",
   gamePageSelect: "/game/select",
+  gameDetailsView: "/game-details",
+  gameDetails: "/game-details/:id",
+  groupDetails: "/group-details/",
 };

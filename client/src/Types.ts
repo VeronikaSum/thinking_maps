@@ -98,3 +98,23 @@ export type Time = {
   minutes: string;
   seconds: string;
 };
+
+export type PlayedGameRequest = {
+  playTime: string;
+  mistakes: string[];
+  cluesCount: number;
+  playerId: string;
+  gameId: string;
+  authId: string;
+};
+
+export type PlayedGameResponse = {
+  id: number;
+  playTime: string;
+  mistakes: string[];
+  cluesCount: number;
+  playedAt: string;
+  player: Child;
+  game: GameResponse;
+  auth: User;
+};
