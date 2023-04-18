@@ -47,5 +47,4 @@ export type PlayedGameRequest = {
   cluesCount: number;
   playerId: string;
   gameId: string;
-  authId: string;
 };
