@@ -7,10 +7,9 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { GroupModule } from './group/group.module';
 import { ChildModule } from './child/child.module';
-import { GameController } from './game/controller/game.controller';
-import { GameService } from './game/service/game.service';
 import { GameModule } from './game/game.module';
 import { PlayedGameModule } from './played-games/played-game.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -30,6 +29,7 @@ import { PlayedGameModule } from './played-games/played-game.module';
     ChildModule,
     GameModule,
     PlayedGameModule,
+    FileModule,
   ],
 })
 export class AppModule {}
