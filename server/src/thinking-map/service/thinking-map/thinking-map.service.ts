@@ -50,7 +50,8 @@ export class ThinkingMapService {
           images[i].originalname.length - 1,
         );
       }
-      imageEntity.title = images[i].originalname;
+
+      imageEntity.title = JSON.parse(request.request).imageNames[i];
 
       const resizedPath = './resources/images/resized/';
       imageEntity.contentResized = fs.readFileSync(

@@ -39,10 +39,12 @@ export const Game: FC = function Game() {
   const [size, setSize] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
   const { id, childId } = useParams();
-  let cluesCount = 0;
+  const [cluesCount, setCluesCount] = useState<number>(0);
+  const [mistakeCount, setMistakeCount] = useState<number>(0);
   const { user } = useAuth0();
 
   const clueToast = () => {
+    setCluesCount(cluesCount + 1);
     const correctImages = images.filter((img) => img.isCorrect);
     const imageTitle = correctImages.at(
       Math.random() * correctImages.length
@@ -104,8 +106,10 @@ export const Game: FC = function Game() {
     if (mistake) {
       allMistakes.push(mistake);
       setAllMistakes(allMistakes);
+      setMistakeCount(mistakeCount + 1);
+      setMistake(undefined);
     }
-  }, [mistake, setMistake, setAllMistakes, allMistakes]);
+  }, [mistake, allMistakes]);
 
   useEffect(() => {
     if (
@@ -121,12 +125,14 @@ export const Game: FC = function Game() {
       }
 
       const request: PlayedGameRequest = {
-        playTime: time.toString(),
+        playTime: time,
         mistakes: allMistakes,
         cluesCount: cluesCount,
         playerId: childId!,
         gameId: game!.id,
       };
+
+      console.log(request);
 
       PlayedGameService.createPlayedGame(request);
     }
@@ -262,7 +268,7 @@ export const Game: FC = function Game() {
             </div>
             <div className="stat place-items-center">
               <div className="stat-title">Klaidos</div>
-              <div className="stat-value">{allMistakes.length}</div>
+              <div className="stat-value">{mistakeCount}</div>
             </div>
             <div className="stat place-items-center">
               <div className="stat-title">Užuomina</div>
@@ -272,7 +278,6 @@ export const Game: FC = function Game() {
                   type="button"
                   onClick={() => {
                     clueToast();
-                    cluesCount++;
                   }}
                 >
                   Pagalba
@@ -329,7 +334,7 @@ export const Game: FC = function Game() {
                   setStartGame(true);
                 }}
               >
-                Pradėti
+                Taip!
               </label>
             </div>
           </div>

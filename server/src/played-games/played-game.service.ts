@@ -36,13 +36,12 @@ export class PlayedGameService {
     const playedGame = new PlayedGame();
 
     playedGame.cluesCount = request.cluesCount;
-    playedGame.mistakes = request.mistakes.join(', ');
+    playedGame.mistakes = request.mistakes.join('; ');
     playedGame.playTime = request.playTime;
 
     playedGame.playerId = request.playerId;
     playedGame.game = await this.gameService.GetById(request.gameId);
 
-    console.log(playedGame);
     this.playedGameRepository.insert(playedGame);
   }
 }

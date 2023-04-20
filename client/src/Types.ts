@@ -5,6 +5,7 @@ export type SearchWordRequest = {
 export type GenerateMapRequest = {
   mapTitle: string;
   mainWord: string;
+  imageNames: string[];
 };
 
 export type Similar = {
@@ -100,7 +101,7 @@ export type Time = {
 };
 
 export type PlayedGameRequest = {
-  playTime: string;
+  playTime: number;
   mistakes: string[];
   cluesCount: number;
   playerId: string;

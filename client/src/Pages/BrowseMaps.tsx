@@ -106,6 +106,9 @@ export default function BrowseMaps() {
               )}
             </p>
             <div className="modal-action">
+              <label htmlFor={"my-modal"} className="btn btn-secondary">
+                Grįžti
+              </label>
               <label
                 htmlFor={selectedGroup ? "my-modal" : ""}
                 className="btn"
