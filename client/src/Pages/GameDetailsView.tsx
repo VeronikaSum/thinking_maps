@@ -40,7 +40,7 @@ export default function GameDetailsView() {
           {game?.generatedCode}
           {")"}
         </h2>
-        <div className="card card-side bg-base-200 shadow-xl max-w-md">
+        <div className="card card-side bg-base-200 shadow-xl">
           <div className="card-body">
             <h2 className="card-title">Priskirta grupė: {game.group.name}</h2>
             {game?.group.child && (
@@ -58,7 +58,7 @@ export default function GameDetailsView() {
                         <th>
                           {child.firstName} {child.lastName}
                         </th>
-                        <th>
+                        <th className="flex flex-row-reverse">
                           <button
                             className="btn btn-primary"
                             onClick={() => setChildId(child.id)}
@@ -72,8 +72,36 @@ export default function GameDetailsView() {
                 </tbody>
               </table>
             )}
+            {results && results.length > 0 && (
+              <table className="table table-normal">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Laikas</th>
+                    <th>Klaidos</th>
+                    <th>Užuominos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map((result) => {
+                    return (
+                      <tr key={result.id}>
+                        <th>{formatDate(result.playedAt)}</th>
+                        <th>{formatTime(result.playTime)}</th>
+                        <th>
+                          {result.mistakes.length > 0
+                            ? result.mistakes
+                            : "Klaidų nebuvo"}
+                        </th>
+                        <th>{result.cluesCount}</th>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
-          {results && results.length > 0 && (
+          {/* {results && results.length > 0 && (
             <div className="card card-side bg-base-200 shadow-xl max-w-md">
               <div className="card-body">
                 <h2 className="card-title">Rezultatai:</h2>
@@ -105,7 +133,7 @@ export default function GameDetailsView() {
                 </table>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

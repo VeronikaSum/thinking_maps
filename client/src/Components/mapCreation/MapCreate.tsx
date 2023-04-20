@@ -74,9 +74,19 @@ function MapCreate({ word }: MapCreateProps) {
   };
 
   const generateMap = async () => {
+    let imageNames: string[] = [];
+    for (var i = 0; i < addedCorrectItems.length; i++) {
+      imageNames.push(addedCorrectItems[i].word);
+    }
+
+    for (var i = 0; i < addedIncorrectItems.length; i++) {
+      imageNames.push(addedIncorrectItems[i].word);
+    }
+
     const request: GenerateMapRequest = {
       mapTitle: title,
       mainWord: word,
+      imageNames: imageNames,
     };
 
     var formData = new FormData();
@@ -96,7 +106,7 @@ function MapCreate({ word }: MapCreateProps) {
       return formData;
     });
 
-    ThinkingMapService.postThinkingMap(formData).then((data) => {
+    await ThinkingMapService.postThinkingMap(formData).then((data) => {
       if (selectedGroup) {
         setThinkingMap(data);
         const request: CreateGameMapRequest = {
@@ -107,8 +117,6 @@ function MapCreate({ word }: MapCreateProps) {
         GameService.createGame(request).then(() => {
           navigate(routes.gameDetailsView);
         });
-      } else {
-        navigate(routes.mainPage);
       }
     });
   };
@@ -157,14 +165,20 @@ function MapCreate({ word }: MapCreateProps) {
                 placeholder="Pavadinimas"
                 type="text"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setShowError(false);
+                }}
               />
             </div>
             <div>
               <select
                 className="select select-bordered w-full max-w-xs"
                 value={selectedGroup}
-                onChange={(e) => setSelectedGroup(e.target?.value)}
+                onChange={(e) => {
+                  setSelectedGroup(e.target?.value);
+                  setShowError(false);
+                }}
               >
                 <option value=""></option>
                 {groups.map((group) => {
@@ -186,7 +200,9 @@ function MapCreate({ word }: MapCreateProps) {
               htmlFor={selectedGroup ? "my-modal" : ""}
               className="btn btn-secondary"
               onClick={() => {
-                createGameMapWithoutGroup();
+                createGameMapWithoutGroup().then(() =>
+                  navigate(routes.mainPage)
+                );
               }}
             >
               Kurti tik žemėlapį

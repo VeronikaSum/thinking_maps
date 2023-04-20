@@ -1,6 +1,7 @@
 export type GenerateMapRequest = {
   mapTitle: string;
   mainWord: string;
+  imageNames: string[];
 };
 
 export type ImageType = {

@@ -40,7 +40,7 @@ export const Image: FC<ImageProps> = function Image({
   const incorrect = () =>
     toast.error("Neteisingai 😥. Pabandyk iš naujo!", {
       position: "top-center",
-      autoClose: 3000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
@@ -49,7 +49,7 @@ export const Image: FC<ImageProps> = function Image({
   const correctAnswer = () =>
     toast.success("Teisingai! Taip ir toliau!", {
       position: "top-center",
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
@@ -87,7 +87,7 @@ export const Image: FC<ImageProps> = function Image({
           setMistake
         ) {
           incorrect();
-          setMistake("Padarė klaidą, pasirinko " + item.title);
+          setMistake("Pasirinko " + item.title);
         }
       },
       collect: (monitor) => ({
